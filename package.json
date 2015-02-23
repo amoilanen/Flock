@@ -1,0 +1,33 @@
+{
+  "name": "Flock",
+  "version": "0.0.1",
+  "description": "Create an event and allow participants to join, everything without registration, just share a link. Getting players to join an amateur football match has never been this easy!",
+  "repository": "https://github.com/antivanov/Flock",
+  "main": "js/app.js",
+  "dependencies": {
+    "flux": "^2.0.1",
+    "object-assign": "^1.0.0",
+    "react": "^0.12.0"
+  },
+  "devDependencies": {
+    "browserify": "^6.2.0",
+    "envify": "^3.0.0",
+    "jest-cli": "~0.1.17",
+    "reactify": "^0.15.2",
+    "uglify-js": "~2.4.15"
+  },
+  "scripts": {
+    "build": "browserify . > build/client/bundle.js",
+    "test": "jest"
+  },
+  "author": "Anton Ivanov",
+  "browserify": {
+    "transform": [
+      "reactify",
+      "envify"
+    ]
+  },
+  "jest": {
+    "rootDir": "./js"
+  }
+}
