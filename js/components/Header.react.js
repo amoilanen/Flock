@@ -10,7 +10,10 @@ var Header = React.createClass({
   render: function() {
     return (
       <header>
-        <button onClick={this._onClick}>+</button>
+        <span className="header-button" onClick={this._onClick}>
+          <i className="fa fa-2x fa-plus-square-o"></i>
+          <span className="header-button-label">New</span>
+        </span>
       </header>
     );
   }

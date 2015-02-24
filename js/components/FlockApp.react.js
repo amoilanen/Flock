@@ -1,4 +1,3 @@
-var Footer = require('./Footer.react');
 var Content = require('./Content.react');
 var Header = require('./Header.react');
 var React = require('react');
@@ -23,7 +22,6 @@ var FlockApp = React.createClass({
       <div>
         <Header />
         <Content />
-        <Footer />
       </div>
     );
   }

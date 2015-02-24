@@ -4,7 +4,8 @@ var Content = React.createClass({
 
   render: function() {
     return (
-      <div>Here goes content</div>
+      <div className="content">
+      </div>
     );
   }
 });
