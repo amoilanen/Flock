@@ -67,12 +67,29 @@ var Header = React.createClass({displayName: "Header",
     FlockActions.create();
   },
 
+  //
   render: function() {
     return (
       React.createElement("header", null, 
-        React.createElement("span", {className: "header-button", onClick: this._onClick}, 
-          React.createElement("i", {className: "fa fa-2x fa-plus-square-o"}), 
-          React.createElement("span", {className: "header-button-label"}, "New")
+        React.createElement("span", {className: "header-tab-container"}, 
+          React.createElement("span", {className: "header-tab", onClick: this._onClick}, 
+            React.createElement("i", {className: "fa fa-2x fa-cog"}), 
+            React.createElement("span", {className: "header-tab-label"}, "Event")
+          ), 
+          React.createElement("span", {className: "header-tab", onClick: this._onClick}, 
+            React.createElement("i", {className: "fa fa-2x fa-users"}), 
+            React.createElement("span", {className: "header-tab-label"}, "Participants")
+          )
+        ), 
+        React.createElement("span", {className: "header-button-container"}, 
+          React.createElement("span", {className: "header-button", onClick: this._onClick}, 
+            React.createElement("i", {className: "fa fa-2x fa-plus-square-o"}), 
+            React.createElement("span", {className: "header-button-label"}, "New event")
+          ), 
+          React.createElement("span", {className: "header-button", onClick: this._onClick}, 
+            React.createElement("i", {className: "fa fa-2x fa-share"}), 
+            React.createElement("span", {className: "header-button-label"}, "Invite others")
+          )
         )
       )
     );
