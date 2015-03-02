@@ -1,1 +1,36 @@
+- Implement simple end-to-end scenario when an empty flock with no participants can be created, fixed url is created
+
 - Use LESS
+- Use Gulp to build the app
+
+- Support tablet resolution (iPad)
+- Support phone resolution (iPhone)
+
+- Organizer can specify the details of a new flock, this flock is accessible via a fixed url
+- Add unit testing infrastructure and add tests for the implemented scenarios
+- Organizer can switch to the Participants tab which is empty
+- Participants tab contents is rendered, all the participants are shown
+- Limit on the number of the participants registered: 50 persons
+- It is possible to add a new participant
+- It is possible to remove a participant
+- Participants can be sorted
+- Participant list can be exported as text
+- Participant list can be exported as pdf
+- Flock can be shared with prospective participants, 'non-admin' url is generated and copied to the clipboard
+- Participant who received a 'non-admin' url can join an event and will be shown in the list of participants
+- Organizer can join their own flock
+- Participant can leave an event they joined
+- Participant can join only once using the same browser
+- Organizer can 'lock' a flock so that nobody can leave or join the event after that
+- Organizer can always unlock an event, even the past one
+
+- Minification and creating a production build
+- Deploy the first version to Heroku
+
+- Flock can be shared via Facebook, Twitter, e-mail, LinkedIn, create an advanced dialog for Sharing
+- Users can join flocks using their Facebook identities
+- Users can join flocks using their Twitter identities
+- Users can join flocks using their LinkedIn identities
+
+- Deploy the second version to Heroku
+- Localization: Finnish, Dutch, German
