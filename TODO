@@ -7,7 +7,7 @@
 - Support phone resolution (iPhone)
 
 - Organizer can specify the details of a new flock, this flock is accessible via a fixed url
-- Add unit testing infrastructure and add tests for the implemented scenarios
+- Add unit testing infrastructure and add tests for the implemented scenarios, add tests for id generator
 - Organizer can switch to the Participants tab which is empty
 - Participants tab contents is rendered, all the participants are shown
 - Limit on the number of the participants registered: 50 persons

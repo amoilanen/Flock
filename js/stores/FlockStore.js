@@ -2,6 +2,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var FlockConstants = require('../constants/FlockConstants');
 var assign = require('object-assign');
+var $ = require('jquery');
 
 var CREATE_EVENT = 'create';
 
@@ -21,7 +22,9 @@ AppDispatcher.register(function(action) {
 
   switch(action.actionType) {
     case FlockConstants.FLOCK_CREATE:
-      FlockStore.emit(CREATE_EVENT);
+      $.post('/new').success(function() {
+        FlockStore.emit(CREATE_EVENT);
+      });
       break;
 
     default:
