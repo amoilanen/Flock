@@ -1,6 +1,7 @@
 var path = require('path');
 var express = require('express');
 var Database = require('./db').Database;
+var uuid = require('./uuid').uuid;
 
 var dbName = 'flock';
 var flockCollectionName = 'flocks';
@@ -13,6 +14,9 @@ var app = express();
 app.use(express.static(path.dirname(__dirname)));
 
 app.post('/new', function(req, res) {
+  var currentTime = new Date().getTime();
+  var adminKey = currentTime + '.' + uuid();
+  var guestKey = currentTime + '.' + uuid();
   var flock = {
     created_at: new Date().getTime(),
     name: 'Floorball',
@@ -20,10 +24,10 @@ app.post('/new', function(req, res) {
     details: 'Wednesday\'s game',
     where: 'Espoo',
     when: '19/3/2011 10:00',
-    max_participants: 20,
+    maxParticipants: 20,
     locked: false,
-    admin_key: '11111111111111111111111111111111',
-    guest_key: '11111111111111111111111111111111',
+    adminKey: adminKey,
+    guestKey: guestKey,
     participants: []
   };
 
