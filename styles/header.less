@@ -1,0 +1,76 @@
+@header-border-bottom-color: @primary-color1;
+@header-color: @primary-color2;
+@header-color-active: @primary-color3;
+@header-color-hover: @primary-color4;
+@header-button-background-color: @primary-color5;
+
+header {
+  border-bottom: 4px solid @header-border-bottom-color;
+  height: 46px;
+  padding-left: 150px;
+  padding-right: 150px;
+}
+
+.header-button-container {
+  float: right;
+}
+
+.header-tab,
+.header-button {
+  position: relative;
+  height: 42px;
+  display: inline-block;
+}
+
+.header-tab {
+  color: @header-color;
+  border-bottom: 4px solid white;
+}
+
+.header-tab:hover,
+.header-button:hover {
+  cursor: pointer;
+}
+
+.header-tab:hover {
+  color: @header-color-hover;
+  border-bottom: 4px solid @header-color-hover;
+}
+
+.header-button {
+  background-color: @header-button-background-color;
+  color: white;
+  border-radius: 8px;
+  margin-top: 2px;
+  margin-right: 2px;
+}
+
+.header-button:hover {
+  background-color: @header-color-hover;
+}
+
+.header-button:active {
+  background-color: @header-color-active;
+}
+
+.header-tab i,
+.header-button i {
+  line-height: 46px;
+  float: left;
+  margin-right: 4px;
+  margin-left: 16px;
+}
+
+.header-tab-label,
+.header-button-label {
+  line-height: 46px;
+  float: right;
+  margin-right: 16px;
+  margin-left: 4px;
+}
+
+@media (max-width: 600px) {
+  header {
+    padding-left: 0px;
+  }
+}

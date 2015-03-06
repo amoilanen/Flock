@@ -1,0 +1,30 @@
+@content-gradient-end-color: @primary-color6;
+@content-gradient-start-color: @primary-color7;
+
+@font-face {
+  font-family: 'Frosting';
+  src: url('/fonts/frosting-for-breakfast/Frosting-for-Breakfast_regular.otf');
+}
+
+.content {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-family: 'Frosting';
+  font-size: 48px;
+  background: linear-gradient(-45deg, @content-gradient-start-color, @content-gradient-end-color);
+}
+
+.logo {
+  bottom: 0;
+  position: absolute;
+  right: 16px;
+  font-size: 52px;
+}
+
+.logo .subtitle {
+  margin-left: 8px;
+  font-size: 36px;
+}

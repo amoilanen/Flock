@@ -1,6 +1,6 @@
-- Implement simple end-to-end scenario when an empty flock with no participants can be created, fixed url is created
+- Implement simple end-to-end scenario when an empty flock with no participants can be created, fixed url is created - DONE
+- Use LESS - DONE
 
-- Use LESS
 - Use Gulp to build the app
 
 - Support tablet resolution (iPad)
