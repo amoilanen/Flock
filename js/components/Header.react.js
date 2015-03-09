@@ -10,6 +10,7 @@ var Header = React.createClass({
   //
   render: function() {
     return (
+      /* jshint ignore:start */
       <header>
         <span className="header-tab-container">
           <span className="header-tab" onClick={this._onClick}>
@@ -32,6 +33,7 @@ var Header = React.createClass({
           </span>
         </span>
       </header>
+      /* jshint ignore:end */
     );
   }
 });

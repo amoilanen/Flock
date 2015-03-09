@@ -19,10 +19,12 @@ var FlockApp = React.createClass({
 
   render: function() {
     return (
+      /* jshint ignore:start */
       <div>
         <Header />
         <Content />
       </div>
+      /* jshint ignore:end */
     );
   }
 });

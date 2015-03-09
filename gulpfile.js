@@ -6,6 +6,7 @@ var reactify = require('reactify');
 var uglify = require('gulp-uglify');
 var less = require('gulp-less');
 var minifyCSS = require('gulp-minify-css');
+var jshint = require('gulp-jshint');
 var path = require('path');
 
 var clientPaths = {
@@ -54,9 +55,15 @@ gulp.task('server', function() {
     .pipe(gulp.dest('./build/server/'));
 });
 
+gulp.task('lint', function() {
+  return gulp.src(['./js/**/*.js', './server/*.js'])
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
+});
+
 //TODO: Copy resources (fonts, CSS) to the built packages as well
 //TODO: Add watch task so that build is rerun when something is changed
-//TODO: Run jshint
+
 //TODO: Support for running tests for the app
 
-gulp.task('default', ['clean', 'client', 'server']);
+gulp.task('default', ['lint', 'clean', 'client', 'server']);
