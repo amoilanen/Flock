@@ -4,7 +4,9 @@ var React = require('react');
 var FlockApp = require('./components/FlockApp.react');
 
 React.render(
+  /* jshint ignore:start */
   React.createElement(FlockApp, null),
+  /* jshint ignore:end */
   document.getElementById('flockapp')
 );
 
@@ -29,12 +31,14 @@ var Content = React.createClass({displayName: "Content",
 
   render: function() {
     return (
+      /* jshint ignore:start */
       React.createElement("div", {className: "content"}, 
         React.createElement("div", {className: "logo"}, 
          React.createElement("span", null, "Flock"), 
          React.createElement("span", {className: "subtitle"}, "events")
         )
       )
+      /* jshint ignore:end */
     );
   }
 });
@@ -62,10 +66,12 @@ var FlockApp = React.createClass({displayName: "FlockApp",
 
   render: function() {
     return (
+      /* jshint ignore:start */
       React.createElement("div", null, 
         React.createElement(Header, null), 
         React.createElement(Content, null)
       )
+      /* jshint ignore:end */
     );
   }
 });
@@ -84,6 +90,7 @@ var Header = React.createClass({displayName: "Header",
   //
   render: function() {
     return (
+      /* jshint ignore:start */
       React.createElement("header", null, 
         React.createElement("span", {className: "header-tab-container"}, 
           React.createElement("span", {className: "header-tab", onClick: this._onClick}, 
@@ -106,6 +113,7 @@ var Header = React.createClass({displayName: "Header",
           )
         )
       )
+      /* jshint ignore:end */
     );
   }
 });

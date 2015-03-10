@@ -22,9 +22,7 @@ gulp.task('clean', function(done) {
   del(['build/client/*'], {force: true}, done);
 });
 
-gulp.task('client', ['client-uglify', 'client-minify-css']);
-
-gulp.task('client-uglify', ['client-browserify'], function() {
+gulp.task('build-client', ['client-browserify'], function() {
   return gulp.src('./build/dev/client/bundle.js')
     .pipe(uglify())
     .pipe(gulp.dest('./build/client/'));
@@ -38,7 +36,7 @@ gulp.task('client-browserify', function() {
     .pipe(gulp.dest('./build/dev/client/'));
 });
 
-gulp.task('client-minify-css', ['client-compile-less'], function() {
+gulp.task('build-styles', ['client-compile-less'], function() {
   return gulp.src('./build/dev/client/app.css')
     .pipe(minifyCSS())
     .pipe(gulp.dest('./build/client/'))
@@ -50,7 +48,7 @@ gulp.task('client-compile-less', function() {
     .pipe(gulp.dest('./build/dev/client/'));
 });
 
-gulp.task('server', function() {
+gulp.task('build-server', function() {
   return gulp.src(serverPaths.js)
     .pipe(gulp.dest('./build/server/'));
 });
@@ -61,9 +59,15 @@ gulp.task('lint', function() {
     .pipe(jshint.reporter('default'));
 });
 
+gulp.task('watch', function() {
+  gulp.watch('js/**/*.js', ['build-client']);
+  gulp.watch('server/**/*.js', ['build-server']);
+  gulp.watch('styles/**/*.js', ['build-styles']);
+});
+
 //TODO: Copy resources (fonts, CSS) to the built packages as well
 //TODO: Add watch task so that build is rerun when something is changed
 
 //TODO: Support for running tests for the app
 
-gulp.task('default', ['lint', 'clean', 'client', 'server']);
+gulp.task('default', ['lint', 'clean', 'build-client', 'build-server', 'watch']);
