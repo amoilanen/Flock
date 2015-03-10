@@ -8,6 +8,7 @@ var less = require('gulp-less');
 var minifyCSS = require('gulp-minify-css');
 var jshint = require('gulp-jshint');
 var path = require('path');
+var rename = require('gulp-rename');
 
 var clientPaths = {
   styles: ['./styles/app.less'],
@@ -19,13 +20,13 @@ var serverPaths = {
 };
 
 gulp.task('clean', function(done) {
-  del(['build/client/*'], {force: true}, done);
+  del(['build/server/client/*'], {force: true}, done);
 });
 
 gulp.task('build-client', ['client-browserify'], function() {
   return gulp.src('./build/dev/client/bundle.js')
     .pipe(uglify())
-    .pipe(gulp.dest('./build/client/'));
+    .pipe(gulp.dest('./build/server/client/'));
 });
 
 gulp.task('client-browserify', function() {
@@ -39,7 +40,7 @@ gulp.task('client-browserify', function() {
 gulp.task('build-styles', ['client-compile-less'], function() {
   return gulp.src('./build/dev/client/app.css')
     .pipe(minifyCSS())
-    .pipe(gulp.dest('./build/client/'))
+    .pipe(gulp.dest('./build/server/client/'))
 });
 
 gulp.task('client-compile-less', function() {
@@ -65,9 +66,41 @@ gulp.task('watch', function() {
   gulp.watch('styles/**/*.js', ['build-styles']);
 });
 
-//TODO: Copy resources (fonts, CSS) to the built packages as well
-//TODO: Add watch task so that build is rerun when something is changed
+gulp.task('copy-resources',
+  ['copy-font-awesome', 'copy-font-frosting', 'copy-css', 'move-index-file'], function() {
+  return gulp.src(['fonts/**/*'])
+    .pipe(gulp.dest('./build/server/client/fonts'));
+});
+
+gulp.task('copy-font-awesome', function() {
+  return gulp.src(['node_modules/font-awesome/**/*'])
+    .pipe(gulp.dest('./build/server/client/fonts/font-awesome'));
+});
+
+gulp.task('copy-font-frosting', function() {
+  return gulp.src(['fonts/**/*'])
+    .pipe(gulp.dest('./build/server/client/fonts'));
+});
+
+gulp.task('copy-css', function() {
+  return gulp.src(['build/dev/client/app.css'])
+    .pipe(gulp.dest('./build/server/client'));
+});
+
+gulp.task('move-index-file', function() {
+  return gulp.src(['index.built.html'])
+    .pipe(rename('index.html'))
+    .pipe(gulp.dest('./build/server/client'));
+});
 
 //TODO: Support for running tests for the app
 
-gulp.task('default', ['lint', 'clean', 'build-client', 'build-server', 'watch']);
+gulp.task('default', [
+  'lint',
+  'clean',
+  'build-styles',
+  'build-client',
+  'build-server',
+  'copy-resources',
+  'watch'
+]);

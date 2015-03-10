@@ -1,3 +1,4 @@
+var fs = require('fs');
 var path = require('path');
 var express = require('express');
 var Database = require('./db').Database;
@@ -11,7 +12,16 @@ var db = new Database(url);
 
 var app = express();
 
-app.use(express.static(path.dirname(__dirname)));
+function getClientRoot() {
+  var clientRoot = path.join(__dirname, 'client');
+
+  if (!fs.existsSync(clientRoot)) {
+    clientRoot = path.dirname(__dirname);
+  }
+  return clientRoot;
+}
+
+app.use(express.static(getClientRoot()));
 
 app.post('/new', function(req, res) {
   var currentTime = new Date().getTime();

@@ -22,6 +22,7 @@
     "gulp-jshint": "^1.9.2",
     "gulp-less": "^3.0.1",
     "gulp-minify-css": "^0.5.1",
+    "gulp-rename": "^1.2.0",
     "jest-cli": "~0.1.17",
     "less": "^2.4.0",
     "reactify": "^0.15.2",
