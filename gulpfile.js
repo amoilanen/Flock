@@ -9,6 +9,7 @@ var minifyCSS = require('gulp-minify-css');
 var jshint = require('gulp-jshint');
 var path = require('path');
 var rename = require('gulp-rename');
+var shell = require('gulp-shell');
 
 var clientPaths = {
   styles: ['./styles/app.less'],
@@ -93,14 +94,19 @@ gulp.task('move-index-file', function() {
     .pipe(gulp.dest('./build/server/client'));
 });
 
-//TODO: Support for running tests for the app
+gulp.task('test', ['jest']);
+
+gulp.task('jest', function() {
+   return gulp.src('.')
+     .pipe(shell('npm test'));
+});
 
 gulp.task('default', [
+  'test',
   'lint',
   'clean',
   'build-styles',
-  'build-client',
-  'build-server',
   'copy-resources',
-  'watch'
+  'build-client',
+  'build-server'
 ]);
