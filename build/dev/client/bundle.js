@@ -95,21 +95,21 @@ var Header = React.createClass({displayName: "Header",
         React.createElement("span", {className: "header-tab-container"}, 
           React.createElement("span", {className: "header-tab", onClick: this._onClick}, 
             React.createElement("i", {className: "fa fa-2x fa-cog"}), 
-            React.createElement("span", {className: "header-tab-label"}, "Event")
+            React.createElement("span", {className: "event header-tab-label"}, "Event")
           ), 
           React.createElement("span", {className: "header-tab", onClick: this._onClick}, 
             React.createElement("i", {className: "fa fa-2x fa-users"}), 
-            React.createElement("span", {className: "header-tab-label"}, "Participants")
+            React.createElement("span", {className: "participants header-tab-label"}, "Participants")
           )
         ), 
         React.createElement("span", {className: "header-button-container"}, 
           React.createElement("span", {className: "header-button", onClick: this._onClick}, 
             React.createElement("i", {className: "fa fa-2x fa-plus-square-o"}), 
-            React.createElement("span", {className: "header-button-label"}, "New event")
+            React.createElement("span", {className: "create-event header-button-label"}, "New event")
           ), 
           React.createElement("span", {className: "header-button", onClick: this._onClick}, 
             React.createElement("i", {className: "fa fa-2x fa-share"}), 
-            React.createElement("span", {className: "header-button-label"}, "Invite others")
+            React.createElement("span", {className: "invite-others header-button-label"}, "Invite others")
           )
         )
       )
@@ -164,7 +164,6 @@ AppDispatcher.register(function(action) {
 });
 
 module.exports = FlockStore;
-
 },{"../constants/FlockConstants":6,"../dispatcher/AppDispatcher":7,"events":9,"jquery":14,"object-assign":15}],9:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //

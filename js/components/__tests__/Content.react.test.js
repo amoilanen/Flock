@@ -9,7 +9,9 @@ describe('Content', function() {
   var component;
 
   beforeEach(function() {
+    /* jshint ignore:start */
     component = TestUtils.renderIntoDocument(<Content />);
+    /* jshint ignore:end */
   });
 
   it('should be rendered', function() {
