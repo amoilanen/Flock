@@ -10,6 +10,7 @@ var jshint = require('gulp-jshint');
 var path = require('path');
 var rename = require('gulp-rename');
 var shell = require('gulp-shell');
+var gulpSequence = require('gulp-sequence');
 
 var clientPaths = {
   styles: ['./styles/app.less'],
@@ -32,7 +33,7 @@ gulp.task('build-client', ['client-browserify'], function() {
 
 gulp.task('client-browserify', function() {
   return browserify(clientPaths.js)
-    .transform(reactify)
+    .transform(reactify, {'es6': true})
     .bundle()
     .pipe(source('bundle.js'))
     .pipe(gulp.dest('./build/dev/client/'));
@@ -57,7 +58,7 @@ gulp.task('build-server', function() {
 
 gulp.task('lint', function() {
   return gulp.src(['./js/**/*.js', './server/*.js'])
-    .pipe(jshint())
+    .pipe(jshint({"esnext": true}))
     .pipe(jshint.reporter('default'));
 });
 
@@ -101,7 +102,7 @@ gulp.task('jest', function() {
      .pipe(shell('npm test'));
 });
 
-gulp.task('default', [
+gulp.task('default', gulpSequence(
   'test',
   'lint',
   'clean',
@@ -109,4 +110,9 @@ gulp.task('default', [
   'copy-resources',
   'build-client',
   'build-server'
-]);
+));
+
+gulp.task('dev', gulpSequence(
+  'build-styles',
+  'build-client'
+));

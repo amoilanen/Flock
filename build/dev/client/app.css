@@ -67,11 +67,11 @@ header {
   left: 0;
   right: 0;
   bottom: 0;
-  font-family: 'Frosting';
-  font-size: 48px;
   background: linear-gradient(-45deg, #d6ffff, #59caff);
 }
 .logo {
+  font-family: 'Frosting';
+  font-size: 48px;
   bottom: 0;
   position: absolute;
   right: 16px;

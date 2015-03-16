@@ -1,4 +1,7 @@
+/* jshint ignore:start */
 var Promise = require('es6-promise').Promise;
+/* jshint ignore:end */
+
 var MongoClient = require('mongodb').MongoClient;
 
 function Database(url) {

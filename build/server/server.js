@@ -21,7 +21,16 @@ function getClientRoot() {
   return clientRoot;
 }
 
-app.use(express.static(getClientRoot()));
+var clientRoot = getClientRoot();
+
+app.use(express.static(clientRoot));
+
+function rewriteUrlToIndex(request, response, next) {
+  response.sendFile(path.join(clientRoot, 'index.html'));
+}
+
+app.get('/configuration/*', rewriteUrlToIndex);
+app.get('/participation/*', rewriteUrlToIndex);
 
 app.post('/new', function(req, res) {
   var currentTime = new Date().getTime();
