@@ -2,7 +2,7 @@ var Router = require('react-router');
 var React = require('react');
 
 var Event = React.createClass({
-  mixins: [ Router.State ],
+  mixins: [Router.State],
 
   render: function() {
     var eventId = this.getParams().eventId;

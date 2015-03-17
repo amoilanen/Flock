@@ -21,9 +21,21 @@ header {
 .header-button:hover {
   cursor: pointer;
 }
+.header-tab.disabled,
+.header-button.disabled {
+  opacity: 0.35;
+}
+.header-tab.disabled:hover,
+.header-button.disabled:hover {
+  cursor: default;
+}
 .header-tab:hover {
   color: #5ebdff;
   border-bottom: 4px solid #5ebdff;
+}
+.header-tab.disabled:hover {
+  color: #585858;
+  border-bottom: 4px solid white;
 }
 .header-button {
   background-color: #75d1d1;
@@ -35,8 +47,14 @@ header {
 .header-button:hover {
   background-color: #5ebdff;
 }
+.header-button.disabled:hover {
+  background-color: #75d1d1;
+}
 .header-button:active {
   background-color: #00a3a3;
+}
+.header-button.disabled:active {
+  background-color: #75d1d1;
 }
 .header-tab i,
 .header-button i {

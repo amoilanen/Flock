@@ -3,9 +3,12 @@
 - Use Gulp to build the app - DONE
 
 - Organizer can specify the details of a new flock, this flock is accessible via a fixed url
-  -- Scenario: root of the app has been opened, then navigation to the Event tab, then a new event is created
+  -- Scenario: root of the app has been opened, then a new event is created, then navigation to the Event tab
+  -- If non-existing eventId then empty Event tab with an error message is displayed
+  -- If non-existing eventId then empty Participants tab with an error message is displayed
+  -- Organizer can switch to the Participants tab which is empty
+
 - Add unit testing infrastructure and add tests for the implemented scenarios, add tests for id generator
-- Organizer can switch to the Participants tab which is empty
 - Participants tab contents is rendered, all the participants are shown
 
 - Support tablet resolution (iPad)

@@ -32,9 +32,24 @@ header {
   cursor: pointer;
 }
 
+.header-tab.disabled,
+.header-button.disabled {
+  opacity: 0.35;
+}
+
+.header-tab.disabled:hover,
+.header-button.disabled:hover {
+  cursor: default;
+}
+
 .header-tab:hover {
   color: @header-color-hover;
   border-bottom: 4px solid @header-color-hover;
+}
+
+.header-tab.disabled:hover {
+  color: @header-color;
+  border-bottom: 4px solid white;
 }
 
 .header-button {
@@ -49,8 +64,16 @@ header {
   background-color: @header-color-hover;
 }
 
+.header-button.disabled:hover {
+  background-color: @header-button-background-color;
+}
+
 .header-button:active {
   background-color: @header-color-active;
+}
+
+.header-button.disabled:active {
+  background-color: @header-button-background-color;
 }
 
 .header-tab i,

@@ -1,24 +1,10 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var FlockConstants = require('../constants/FlockConstants');
-
-var FlockActions = {
-
-  create: function() {
-    AppDispatcher.dispatch({
-      actionType: FlockConstants.FLOCK_CREATE
-    });
-  }
-};
-
-module.exports = FlockActions;
-},{"../constants/FlockConstants":8,"../dispatcher/AppDispatcher":9}],2:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var FlockApp = require('./components/FlockApp.react.js');
 var Event = require('./components/Event.react.js');
 var Participants = require('./components/Participants.react.js');
-var {Route, Handler} = Router;
+var $__0=   Router,Route=$__0.Route,Handler=$__0.Handler;
 
 var routes = (
   /* jshint ignore:start */
@@ -37,9 +23,23 @@ Router.run(routes, Router.HistoryLocation, function (Handler) {
   React.render(React.createElement(Handler, null), document.getElementById('flockapp'));
   /* jshint ignore:end */
 });
-},{"./components/Event.react.js":4,"./components/FlockApp.react.js":5,"./components/Participants.react.js":7,"react":204,"react-router":45}],3:[function(require,module,exports){
+},{"./components/Event.react.js":4,"./components/FlockApp.react.js":5,"./components/Participants.react.js":7,"react":204,"react-router":45}],2:[function(require,module,exports){
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var FlockConstants = require('../constants/FlockConstants');
+
+var FlockActions = {
+
+  create: function() {
+    AppDispatcher.dispatch({
+      actionType: FlockConstants.FLOCK_CREATE
+    });
+  }
+};
+
+module.exports = FlockActions;
+},{"../constants/FlockConstants":8,"../dispatcher/AppDispatcher":9}],3:[function(require,module,exports){
 var React = require('react');
-var {RouteHandler} = require('react-router');
+var $__0=  require('react-router'),RouteHandler=$__0.RouteHandler;
 
 var Content = React.createClass({displayName: "Content",
 
@@ -64,7 +64,7 @@ var Router = require('react-router');
 var React = require('react');
 
 var Event = React.createClass({displayName: "Event",
-  mixins: [ Router.State ],
+  mixins: [Router.State],
 
   render: function() {
     var eventId = this.getParams().eventId;
@@ -116,6 +116,7 @@ var FlockApp = React.createClass({displayName: "FlockApp",
 module.exports = FlockApp;
 },{"../stores/FlockStore":10,"./Content.react":3,"./Header.react":6,"react":204}],6:[function(require,module,exports){
 var React = require('react');
+var Router = require('react-router');
 var FlockActions = require('../actions/FlockActions');
 
 var Header = React.createClass({displayName: "Header",
@@ -124,17 +125,23 @@ var Header = React.createClass({displayName: "Header",
     FlockActions.create();
   },
 
-  //
   render: function() {
+    var currentPath = Router.HistoryLocation.getCurrentPath();
+    var isOnHomePage = (currentPath === '/');
+
+    var eventTabClass = (isOnHomePage ? "header-tab disabled" : "header-tab");
+    var participantsTabClass = (isOnHomePage ? "header-tab disabled" : "header-tab");
+    var inviteButtonClass = (isOnHomePage ? "header-button disabled" : "header-button");
+
     return (
       /* jshint ignore:start */
       React.createElement("header", null, 
         React.createElement("span", {className: "header-tab-container"}, 
-          React.createElement("span", {className: "header-tab", onClick: this._onClick}, 
+          React.createElement("span", {className: eventTabClass, onClick: isOnHomePage ? function() {}: this._onClick}, 
             React.createElement("i", {className: "fa fa-2x fa-cog"}), 
             React.createElement("span", {className: "event header-tab-label"}, "Event")
           ), 
-          React.createElement("span", {className: "header-tab", onClick: this._onClick}, 
+          React.createElement("span", {className: participantsTabClass, onClick: isOnHomePage ? function() {}: this._onClick}, 
             React.createElement("i", {className: "fa fa-2x fa-users"}), 
             React.createElement("span", {className: "participants header-tab-label"}, "Participants")
           )
@@ -144,7 +151,7 @@ var Header = React.createClass({displayName: "Header",
             React.createElement("i", {className: "fa fa-2x fa-plus-square-o"}), 
             React.createElement("span", {className: "create-event header-button-label"}, "New event")
           ), 
-          React.createElement("span", {className: "header-button", onClick: this._onClick}, 
+          React.createElement("span", {className: inviteButtonClass, onClick: isOnHomePage ? function() {}: this._onClick}, 
             React.createElement("i", {className: "fa fa-2x fa-share"}), 
             React.createElement("span", {className: "invite-others header-button-label"}, "Invite others")
           )
@@ -156,12 +163,12 @@ var Header = React.createClass({displayName: "Header",
 });
 
 module.exports = Header;
-},{"../actions/FlockActions":1,"react":204}],7:[function(require,module,exports){
+},{"../actions/FlockActions":2,"react":204,"react-router":45}],7:[function(require,module,exports){
 var Router = require('react-router');
 var React = require('react');
 
 var Participants = React.createClass({displayName: "Participants",
-  mixins: [ Router.State ],
+  mixins: [Router.State],
 
   render: function() {
     var eventId = this.getParams().eventId;
@@ -31222,4 +31229,4 @@ module.exports = warning;
 },{"./emptyFunction":165,"_process":12}],204:[function(require,module,exports){
 module.exports = require('./lib/React');
 
-},{"./lib/React":85}]},{},[2]);
+},{"./lib/React":85}]},{},[1]);
