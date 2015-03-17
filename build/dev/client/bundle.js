@@ -1,10 +1,24 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var FlockConstants = require('../constants/FlockConstants');
+
+var FlockActions = {
+
+  create: function() {
+    AppDispatcher.dispatch({
+      actionType: FlockConstants.FLOCK_CREATE
+    });
+  }
+};
+
+module.exports = FlockActions;
+},{"../constants/FlockConstants":8,"../dispatcher/AppDispatcher":9}],2:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var FlockApp = require('./components/FlockApp.react.js');
 var Event = require('./components/Event.react.js');
 var Participants = require('./components/Participants.react.js');
-var $__0=   Router,Route=$__0.Route,Handler=$__0.Handler;
+var {Route, Handler} = Router;
 
 var routes = (
   /* jshint ignore:start */
@@ -23,23 +37,9 @@ Router.run(routes, Router.HistoryLocation, function (Handler) {
   React.render(React.createElement(Handler, null), document.getElementById('flockapp'));
   /* jshint ignore:end */
 });
-},{"./components/Event.react.js":4,"./components/FlockApp.react.js":5,"./components/Participants.react.js":7,"react":204,"react-router":45}],2:[function(require,module,exports){
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var FlockConstants = require('../constants/FlockConstants');
-
-var FlockActions = {
-
-  create: function() {
-    AppDispatcher.dispatch({
-      actionType: FlockConstants.FLOCK_CREATE
-    });
-  }
-};
-
-module.exports = FlockActions;
-},{"../constants/FlockConstants":8,"../dispatcher/AppDispatcher":9}],3:[function(require,module,exports){
+},{"./components/Event.react.js":4,"./components/FlockApp.react.js":5,"./components/Participants.react.js":7,"react":204,"react-router":45}],3:[function(require,module,exports){
 var React = require('react');
-var $__0=  require('react-router'),RouteHandler=$__0.RouteHandler;
+var {RouteHandler} = require('react-router');
 
 var Content = React.createClass({displayName: "Content",
 
@@ -60,11 +60,16 @@ var Content = React.createClass({displayName: "Content",
 
 module.exports = Content;
 },{"react":204,"react-router":45}],4:[function(require,module,exports){
+var Router = require('react-router');
 var React = require('react');
 
 var Event = React.createClass({displayName: "Event",
+  mixins: [ Router.State ],
 
   render: function() {
+    var eventId = this.getParams().eventId;
+
+    console.log('Event tab: eventId = ', eventId);
     return (
       /* jshint ignore:start */
       React.createElement("div", {className: "event"}, 
@@ -76,7 +81,7 @@ var Event = React.createClass({displayName: "Event",
 });
 
 module.exports = Event;
-},{"react":204}],5:[function(require,module,exports){
+},{"react":204,"react-router":45}],5:[function(require,module,exports){
 var Content = require('./Content.react');
 var Header = require('./Header.react');
 var React = require('react');
@@ -151,12 +156,17 @@ var Header = React.createClass({displayName: "Header",
 });
 
 module.exports = Header;
-},{"../actions/FlockActions":2,"react":204}],7:[function(require,module,exports){
+},{"../actions/FlockActions":1,"react":204}],7:[function(require,module,exports){
+var Router = require('react-router');
 var React = require('react');
 
 var Participants = React.createClass({displayName: "Participants",
+  mixins: [ Router.State ],
 
   render: function() {
+    var eventId = this.getParams().eventId;
+
+    console.log('Participants tab: eventId = ', eventId);
     return (
       /* jshint ignore:start */
       React.createElement("div", {className: "participants"}, 
@@ -168,7 +178,7 @@ var Participants = React.createClass({displayName: "Participants",
 });
 
 module.exports = Participants;
-},{"react":204}],8:[function(require,module,exports){
+},{"react":204,"react-router":45}],8:[function(require,module,exports){
 module.exports = {
   FLOCK_CREATE: null
 };
@@ -31212,4 +31222,4 @@ module.exports = warning;
 },{"./emptyFunction":165,"_process":12}],204:[function(require,module,exports){
 module.exports = require('./lib/React');
 
-},{"./lib/React":85}]},{},[1]);
+},{"./lib/React":85}]},{},[2]);
