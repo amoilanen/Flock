@@ -1,3 +1,6 @@
+/* jshint ignore:start */
+var Promise = require('es6-promise').Promise;
+/* jshint ignore:end */
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var FlockConstants = require('../constants/FlockConstants');
@@ -22,8 +25,9 @@ AppDispatcher.register(function(action) {
 
   switch(action.actionType) {
     case FlockConstants.FLOCK_CREATE:
-      $.post('/new').success(function() {
+      Promise.resolve($.post('/new')).then(function(flock) {
         FlockStore.emit(CREATE_EVENT);
+        document.location.pathname = '/configuration/' + flock.adminKey;
       });
       break;
 
