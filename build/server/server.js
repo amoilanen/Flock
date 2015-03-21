@@ -37,7 +37,7 @@ app.post('/new', function(req, res) {
   var adminKey = currentTime + '.' + uuid();
   var guestKey = currentTime + '.' + uuid();
   var flock = {
-    created_at: new Date().getTime(),
+    createdAt: new Date().getTime(),
     name: 'Floorball',
     organizer: 'Anton',
     details: 'Wednesday\'s game',
@@ -53,7 +53,7 @@ app.post('/new', function(req, res) {
   db.getConnection().then(function() {
     return db.insert(flockCollectionName, [flock]);
   }).then(function() {
-    res.sendStatus(200);
+    res.json(flock);
   }).catch(function(err) {
     res.sendStatus(500);
   });

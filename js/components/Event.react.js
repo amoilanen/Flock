@@ -1,17 +1,19 @@
-var Router = require('react-router');
 var React = require('react');
+var FlockStore = require('../stores/FlockStore');
 
 var Event = React.createClass({
-  mixins: [Router.State],
 
+  //TODO: Support editing the field of the current flock
   render: function() {
-    var eventId = this.getParams().eventId;
-
-    console.log('Event tab: eventId = ', eventId);
+    console.log('Loaded events tab = ', this.props.flock);
     return (
       /* jshint ignore:start */
       <div className="event">
-        <p>Event tab active</p>
+        <label>Name</label><input type="text" value={this.props.flock.name}></input>
+        <label>Organizer</label><input type="text" value={this.props.flock.organizer}></input>
+        <label>Details</label><input type="text" value={this.props.flock.details}></input>
+        <label>Where</label><input type="text" value={this.props.flock.where}></input>
+        <label>When</label><input type="text" value={this.props.flock.when}></input>
       </div>
       /* jshint ignore:end */
     );

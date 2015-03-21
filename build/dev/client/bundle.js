@@ -9,8 +9,8 @@ var $__0=   Router,Route=$__0.Route,Handler=$__0.Handler;
 var routes = (
   /* jshint ignore:start */
   React.createElement(Route, {handler: FlockApp}, 
-    React.createElement(Route, {name: "event", path: "configuration/:eventId", handler: Event}), 
-    React.createElement(Route, {name: "participation", path: "participation/:eventId", handler: Participants})
+    React.createElement(Route, {name: "event", path: "configure/:accessKey", handler: Event}), 
+    React.createElement(Route, {name: "participation", path: "participate/:accessKey", handler: Participants})
   )
   /* jshint ignore:end */
 );
@@ -47,7 +47,7 @@ var Content = React.createClass({displayName: "Content",
     return (
       /* jshint ignore:start */
       React.createElement("div", {className: "content"}, 
-        React.createElement(RouteHandler, null), 
+        React.createElement(RouteHandler, {flock: this.props.flock}), 
         React.createElement("div", {className: "logo"}, 
          React.createElement("span", null, "Flock"), 
          React.createElement("span", {className: "subtitle"}, "events")
@@ -60,20 +60,22 @@ var Content = React.createClass({displayName: "Content",
 
 module.exports = Content;
 },{"react":205,"react-router":46}],4:[function(require,module,exports){
-var Router = require('react-router');
 var React = require('react');
+var FlockStore = require('../stores/FlockStore');
 
 var Event = React.createClass({displayName: "Event",
-  mixins: [Router.State],
 
+  //TODO: Support editing the field of the current flock
   render: function() {
-    var eventId = this.getParams().eventId;
-
-    console.log('Event tab: eventId = ', eventId);
+    console.log('Loaded events tab = ', this.props.flock);
     return (
       /* jshint ignore:start */
       React.createElement("div", {className: "event"}, 
-        React.createElement("p", null, "Event tab active")
+        React.createElement("label", null, "Name"), React.createElement("input", {type: "text", value: this.props.flock.name}), 
+        React.createElement("label", null, "Organizer"), React.createElement("input", {type: "text", value: this.props.flock.organizer}), 
+        React.createElement("label", null, "Details"), React.createElement("input", {type: "text", value: this.props.flock.details}), 
+        React.createElement("label", null, "Where"), React.createElement("input", {type: "text", value: this.props.flock.where}), 
+        React.createElement("label", null, "When"), React.createElement("input", {type: "text", value: this.props.flock.when})
       )
       /* jshint ignore:end */
     );
@@ -81,19 +83,41 @@ var Event = React.createClass({displayName: "Event",
 });
 
 module.exports = Event;
-},{"react":205,"react-router":46}],5:[function(require,module,exports){
+},{"../stores/FlockStore":10,"react":205}],5:[function(require,module,exports){
 var Content = require('./Content.react');
 var Header = require('./Header.react');
 var React = require('react');
+var Router = require('react-router');
 var FlockStore = require('../stores/FlockStore');
 
+//TODO: Read this and query for the flock earlier and query for the flock
+//TODO: Do not reload the whole app when navigating to a new URL
+//TODO: Load current flock only once when the top app component is rendered if it is required
+//and then only when a new flock is created
+
 var FlockApp = React.createClass({displayName: "FlockApp",
+
+  mixins: [Router.State],
+
+  getInitialState: function() {
+    return {
+      flock: {}
+    };
+  },
 
   _onCreate: function() {
     console.log("New flock created");
   },
 
   componentDidMount: function() {
+    var self = this;
+    var accessKey = this.getParams().accessKey;
+
+    if (accessKey) {
+      FlockStore.loadFlock(accessKey).then(function(flock) {
+        self.setState({flock: flock})
+      });
+    }
     FlockStore.addOnCreateListener(this._onCreate);
   },
 
@@ -102,11 +126,12 @@ var FlockApp = React.createClass({displayName: "FlockApp",
   },
 
   render: function() {
+
     return (
       /* jshint ignore:start */
       React.createElement("div", null, 
         React.createElement(Header, null), 
-        React.createElement(Content, null)
+        React.createElement(Content, {flock: this.state.flock})
       )
       /* jshint ignore:end */
     );
@@ -114,7 +139,7 @@ var FlockApp = React.createClass({displayName: "FlockApp",
 });
 
 module.exports = FlockApp;
-},{"../stores/FlockStore":10,"./Content.react":3,"./Header.react":6,"react":205}],6:[function(require,module,exports){
+},{"../stores/FlockStore":10,"./Content.react":3,"./Header.react":6,"react":205,"react-router":46}],6:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var FlockActions = require('../actions/FlockActions');
@@ -171,9 +196,9 @@ var Participants = React.createClass({displayName: "Participants",
   mixins: [Router.State],
 
   render: function() {
-    var eventId = this.getParams().eventId;
+    var accessKey = this.getParams().accessKey;
 
-    console.log('Participants tab: eventId = ', eventId);
+    console.log('Participants tab: accessKey = ', accessKey);
     return (
       /* jshint ignore:start */
       React.createElement("div", {className: "participants"}, 
@@ -206,7 +231,16 @@ var $ = require('jquery');
 
 var CREATE_EVENT = 'create';
 
-var _participants = [];
+var DEFAULT_FLOCK = {
+  createdAt: new Date().getTime(),
+  name: '',
+  organizer: '',
+  details: '',
+  where: '',
+  when: ''
+};
+
+var _currentFlock = {};
 
 var FlockStore = assign({}, EventEmitter.prototype, {
   addOnCreateListener: function(callback) {
@@ -214,6 +248,12 @@ var FlockStore = assign({}, EventEmitter.prototype, {
   },
   removeOnCreateListener: function() {
     this.removeListener(CREATE_EVENT, callback);
+  },
+  loadFlock: function(accessKey) {
+    return Promise.resolve($.get('/flock/' + accessKey)).then(function(flock) {
+      _currentFlock = flock;
+      return flock;
+    });
   }
 });
 
@@ -224,6 +264,7 @@ AppDispatcher.register(function(action) {
     case FlockConstants.FLOCK_CREATE:
       Promise.resolve($.post('/new')).then(function(flock) {
         FlockStore.emit(CREATE_EVENT);
+        _currentFlock = flock;
         document.location.pathname = '/configuration/' + flock.adminKey;
       });
       break;

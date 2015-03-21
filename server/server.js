@@ -29,8 +29,8 @@ function rewriteUrlToIndex(request, response, next) {
   response.sendFile(path.join(clientRoot, 'index.html'));
 }
 
-app.get('/configuration/*', rewriteUrlToIndex);
-app.get('/participation/*', rewriteUrlToIndex);
+app.get('/configure/*', rewriteUrlToIndex);
+app.get('/participate/*', rewriteUrlToIndex);
 
 app.post('/new', function(req, res) {
   var currentTime = new Date().getTime();
@@ -54,6 +54,18 @@ app.post('/new', function(req, res) {
     return db.insert(flockCollectionName, [flock]);
   }).then(function() {
     res.json(flock);
+  }).catch(function(err) {
+    res.sendStatus(500);
+  });
+});
+
+app.get('/flock/*', function(req, res) {
+  var key = req.url.split('/').pop();
+
+  db.getConnection().then(function() {
+    return db.find(flockCollectionName, {adminKey: key});
+  }).then(function(flocks) {
+    res.json(flocks[0]);
   }).catch(function(err) {
     res.sendStatus(500);
   });

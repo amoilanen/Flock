@@ -7,7 +7,7 @@ var Content = React.createClass({
     return (
       /* jshint ignore:start */
       <div className="content">
-        <RouteHandler />
+        <RouteHandler flock={this.props.flock}/>
         <div className="logo">
          <span>Flock</span>
          <span className="subtitle">events</span>

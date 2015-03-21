@@ -9,7 +9,16 @@ var $ = require('jquery');
 
 var CREATE_EVENT = 'create';
 
-var _participants = [];
+var DEFAULT_FLOCK = {
+  createdAt: new Date().getTime(),
+  name: '',
+  organizer: '',
+  details: '',
+  where: '',
+  when: ''
+};
+
+var _currentFlock = {};
 
 var FlockStore = assign({}, EventEmitter.prototype, {
   addOnCreateListener: function(callback) {
@@ -17,6 +26,12 @@ var FlockStore = assign({}, EventEmitter.prototype, {
   },
   removeOnCreateListener: function() {
     this.removeListener(CREATE_EVENT, callback);
+  },
+  loadFlock: function(accessKey) {
+    return Promise.resolve($.get('/flock/' + accessKey)).then(function(flock) {
+      _currentFlock = flock;
+      return flock;
+    });
   }
 });
 
@@ -27,6 +42,7 @@ AppDispatcher.register(function(action) {
     case FlockConstants.FLOCK_CREATE:
       Promise.resolve($.post('/new')).then(function(flock) {
         FlockStore.emit(CREATE_EVENT);
+        _currentFlock = flock;
         document.location.pathname = '/configuration/' + flock.adminKey;
       });
       break;

@@ -28,6 +28,23 @@ Database.prototype.getConnection = function() {
   }
 };
 
+Database.prototype.find = function(collectionName, query, projection) {
+  var self = this;
+
+  projection = projection || {};
+  return new Promise(function(resolve, reject) {
+    var collection = self.db.collection(collectionName);
+
+    collection.find(query, projection).toArray(function(err, result) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
 Database.prototype.insert = function(collectionName, docs) {
   var self = this;
 

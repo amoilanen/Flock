@@ -7,6 +7,7 @@
      --- New button creates a new event, stores it, the URL is constructed using its id, then the application navigates to /configuration/{admin_id}
      --- The event details are displayed on the Event tab
      --- The created event can be accessed via this URL /configuration/{admin_id}
+
      --- The created event can be accessed via this URL /configuration/{attend_id}
      --- If non-existing eventId then empty Event tab with an error message is displayed
      --- If non-existing eventId then empty Participants tab with an error message is displayed

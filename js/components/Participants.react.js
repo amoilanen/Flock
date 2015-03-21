@@ -5,9 +5,9 @@ var Participants = React.createClass({
   mixins: [Router.State],
 
   render: function() {
-    var eventId = this.getParams().eventId;
+    var accessKey = this.getParams().accessKey;
 
-    console.log('Participants tab: eventId = ', eventId);
+    console.log('Participants tab: accessKey = ', accessKey);
     return (
       /* jshint ignore:start */
       <div className="participants">
