@@ -6,9 +6,11 @@
   -- Scenario: root of the app has been opened, then a new event is created, then navigation to the Event tab
      --- New button creates a new event, stores it, the URL is constructed using its id, then the application navigates to /configuration/{admin_id} - DONE
      --- The event details are displayed on the Event tab - DONE
-     --- The created event can be accessed via this URL /admin/event/{admin_id}
+     --- The created event can be accessed via this URL /admin/event/{admin_id} - DONE
+     --- The created event can be accessed via this URL /guest/event/{attend_id} - DONE
+     --- Event details can be edited and saved by an admin
+     --- Event details can only be viewed and not edited by a guest
 
-     --- The created event can be accessed via this URL /guest/event/{attend_id}
      --- If non-existing eventId then empty Event tab with an error message is displayed
      --- If non-existing eventId then empty Participants tab with an error message is displayed
      --- Organizer can switch to the Participants tab which is empty
@@ -17,7 +19,6 @@
      --- Accessing /guest/* with an admin id is not possible
      --- Accessing /guest/* with unknown id is not possible
      --- Guest does not receive adminKey
-     --- Event details can be edited and saved
 
 - Add unit testing infrastructure and add tests for the implemented scenarios, add tests for id generator
 - Participants tab contents is rendered, all the participants are shown

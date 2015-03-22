@@ -14,7 +14,7 @@ header {
   display: inline-block;
 }
 .header-tab {
-  color: #585858;
+  color: #66757f;
   border-bottom: 4px solid white;
 }
 .header-tab:hover,
@@ -30,31 +30,31 @@ header {
   cursor: default;
 }
 .header-tab:hover {
-  color: #5ebdff;
-  border-bottom: 4px solid #5ebdff;
+  color: #0084b4;
+  border-bottom: 4px solid #0084b4;
 }
 .header-tab.disabled:hover {
-  color: #585858;
+  color: #66757f;
   border-bottom: 4px solid white;
 }
 .header-button {
-  background-color: #75d1d1;
+  background-color: #4ea8cc;
   color: white;
   border-radius: 8px;
   margin-top: 2px;
   margin-right: 2px;
 }
 .header-button:hover {
-  background-color: #5ebdff;
+  background-color: #0084b4;
 }
 .header-button.disabled:hover {
-  background-color: #75d1d1;
+  background-color: #4ea8cc;
 }
 .header-button:active {
-  background-color: #00a3a3;
+  background-color: #005d7e;
 }
 .header-button.disabled:active {
-  background-color: #75d1d1;
+  background-color: #4ea8cc;
 }
 .header-tab i,
 .header-button i {
@@ -85,7 +85,7 @@ header {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(-45deg, #d6ffff, #59caff);
+  background: linear-gradient(-45deg, #bce0ee, #29b8e5);
 }
 .logo {
   font-family: 'Frosting';
@@ -98,6 +98,25 @@ header {
 .logo .subtitle {
   margin-left: 8px;
   font-size: 36px;
+}
+/* TODO: Support mobile resolution */
+.event-details {
+  background-color: white;
+  border-radius: 8px;
+  margin-left: 150px;
+  margin-top: 50px;
+  padding: 16px;
+  width: 600px;
+  color: #66757f;
+}
+.event-details label {
+  display: inline-block;
+  margin-right: 16px;
+  min-width: 80px;
+  width: 20%;
+}
+.event-details .field {
+  margin-top: 16px;
 }
 body {
   margin: 0;

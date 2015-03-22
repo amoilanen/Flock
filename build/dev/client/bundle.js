@@ -70,12 +70,27 @@ var Event = React.createClass({displayName: "Event",
     console.log('Loaded events tab = ', this.props.flock);
     return (
       /* jshint ignore:start */
-      React.createElement("div", {className: "event"}, 
-        React.createElement("label", null, "Name"), React.createElement("input", {type: "text", value: this.props.flock.name}), 
-        React.createElement("label", null, "Organizer"), React.createElement("input", {type: "text", value: this.props.flock.organizer}), 
-        React.createElement("label", null, "Details"), React.createElement("input", {type: "text", value: this.props.flock.details}), 
-        React.createElement("label", null, "Where"), React.createElement("input", {type: "text", value: this.props.flock.where}), 
-        React.createElement("label", null, "When"), React.createElement("input", {type: "text", value: this.props.flock.when})
+      React.createElement("section", {className: "event-details"}, 
+        React.createElement("div", {className: "field"}, 
+          React.createElement("label", null, "Name"), 
+          React.createElement("input", {type: "text", value: this.props.flock.name})
+        ), 
+        React.createElement("div", {className: "field"}, 
+          React.createElement("label", null, "Organizer"), 
+          React.createElement("input", {type: "text", value: this.props.flock.organizer})
+        ), 
+        React.createElement("div", {className: "field"}, 
+          React.createElement("label", null, "Details"), 
+          React.createElement("input", {type: "text", value: this.props.flock.details})
+        ), 
+        React.createElement("div", {className: "field"}, 
+          React.createElement("label", null, "Where"), 
+          React.createElement("input", {type: "text", value: this.props.flock.where})
+        ), 
+        React.createElement("div", {className: "field"}, 
+          React.createElement("label", null, "When"), 
+          React.createElement("input", {type: "text", value: this.props.flock.when})
+        )
       )
       /* jshint ignore:end */
     );
