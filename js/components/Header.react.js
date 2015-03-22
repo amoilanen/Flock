@@ -9,13 +9,22 @@ var Header = React.createClass({
   },
 
   render: function() {
-    var currentPath = Router.HistoryLocation.getCurrentPath();
-    var isOnHomePage = (currentPath === '/');
+    var currentPath = Router.HistoryLocation.getCurrentPath().split('/');
+    var topPage = currentPath[1];
+    var isOnHomePage = (topPage.length == 0);
 
     var eventTabClass = (isOnHomePage ? "header-tab disabled" : "header-tab");
     var participantsTabClass = (isOnHomePage ? "header-tab disabled" : "header-tab");
     var inviteButtonClass = (isOnHomePage ? "header-button disabled" : "header-button");
 
+    console.log('currentPath = ', currentPath);
+    console.log('topPage = ', topPage);
+
+    if (topPage === 'event') {
+      eventTabClass += ' active';
+    } else if (topPage === 'participants') {
+      participantsTabClass += ' active';
+    }
     return (
       /* jshint ignore:start */
       <header>

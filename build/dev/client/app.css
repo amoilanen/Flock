@@ -33,6 +33,9 @@ header {
   color: #0084b4;
   border-bottom: 4px solid #0084b4;
 }
+.header-tab.active {
+  border-bottom: 4px solid #0084b4;
+}
 .header-tab.disabled:hover {
   color: #66757f;
   border-bottom: 4px solid white;
