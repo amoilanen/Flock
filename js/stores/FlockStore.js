@@ -27,8 +27,10 @@ var FlockStore = assign({}, EventEmitter.prototype, {
   removeOnCreateListener: function() {
     this.removeListener(CREATE_EVENT, callback);
   },
-  loadFlock: function(accessKey) {
-    return Promise.resolve($.get('/flock/' + accessKey)).then(function(flock) {
+  loadFlock: function(accessKey, role) {
+    var url = ['', 'flock', role, accessKey].join('/');
+
+    return Promise.resolve($.get(url)).then(function(flock) {
       _currentFlock = flock;
       return flock;
     });
@@ -43,7 +45,7 @@ AppDispatcher.register(function(action) {
       Promise.resolve($.post('/new')).then(function(flock) {
         FlockStore.emit(CREATE_EVENT);
         _currentFlock = flock;
-        document.location.pathname = '/configuration/' + flock.adminKey;
+        document.location.pathname = '/event/admin/' + flock.adminKey;
       });
       break;
 

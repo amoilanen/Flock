@@ -8,8 +8,8 @@ var {Route, Handler} = Router;
 var routes = (
   /* jshint ignore:start */
   <Route handler={FlockApp}>
-    <Route name="event" path="configure/:accessKey" handler={Event} />
-    <Route name="participation" path="participate/:accessKey" handler={Participants} />
+    <Route name="event" path="event/:role/:accessKey" handler={Event} />
+    <Route name="participation" path="participants/:role/:accessKey" handler={Participants} />
   </Route>
   /* jshint ignore:end */
 );

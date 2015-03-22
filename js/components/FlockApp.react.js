@@ -26,9 +26,10 @@ var FlockApp = React.createClass({
   componentDidMount: function() {
     var self = this;
     var accessKey = this.getParams().accessKey;
+    var role = this.getParams().role;
 
     if (accessKey) {
-      FlockStore.loadFlock(accessKey).then(function(flock) {
+      FlockStore.loadFlock(accessKey, role).then(function(flock) {
         self.setState({flock: flock})
       });
     }

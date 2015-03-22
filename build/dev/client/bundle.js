@@ -9,8 +9,8 @@ var $__0=   Router,Route=$__0.Route,Handler=$__0.Handler;
 var routes = (
   /* jshint ignore:start */
   React.createElement(Route, {handler: FlockApp}, 
-    React.createElement(Route, {name: "event", path: "configure/:accessKey", handler: Event}), 
-    React.createElement(Route, {name: "participation", path: "participate/:accessKey", handler: Participants})
+    React.createElement(Route, {name: "event", path: "event/:role/:accessKey", handler: Event}), 
+    React.createElement(Route, {name: "participation", path: "participants/:role/:accessKey", handler: Participants})
   )
   /* jshint ignore:end */
 );
@@ -112,9 +112,10 @@ var FlockApp = React.createClass({displayName: "FlockApp",
   componentDidMount: function() {
     var self = this;
     var accessKey = this.getParams().accessKey;
+    var role = this.getParams().role;
 
     if (accessKey) {
-      FlockStore.loadFlock(accessKey).then(function(flock) {
+      FlockStore.loadFlock(accessKey, role).then(function(flock) {
         self.setState({flock: flock})
       });
     }
@@ -249,8 +250,10 @@ var FlockStore = assign({}, EventEmitter.prototype, {
   removeOnCreateListener: function() {
     this.removeListener(CREATE_EVENT, callback);
   },
-  loadFlock: function(accessKey) {
-    return Promise.resolve($.get('/flock/' + accessKey)).then(function(flock) {
+  loadFlock: function(accessKey, role) {
+    var url = ['', 'flock', role, accessKey].join('/');
+
+    return Promise.resolve($.get(url)).then(function(flock) {
       _currentFlock = flock;
       return flock;
     });
@@ -265,7 +268,7 @@ AppDispatcher.register(function(action) {
       Promise.resolve($.post('/new')).then(function(flock) {
         FlockStore.emit(CREATE_EVENT);
         _currentFlock = flock;
-        document.location.pathname = '/configuration/' + flock.adminKey;
+        document.location.pathname = '/event/admin/' + flock.adminKey;
       });
       break;
 

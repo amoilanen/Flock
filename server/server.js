@@ -29,8 +29,10 @@ function rewriteUrlToIndex(request, response, next) {
   response.sendFile(path.join(clientRoot, 'index.html'));
 }
 
-app.get('/configure/*', rewriteUrlToIndex);
-app.get('/participate/*', rewriteUrlToIndex);
+app.get('/event/admin/*', rewriteUrlToIndex);
+app.get('/participants/admin/*', rewriteUrlToIndex);
+app.get('/event/guest/*', rewriteUrlToIndex);
+app.get('/participants/guest/*', rewriteUrlToIndex);
 
 app.post('/new', function(req, res) {
   var currentTime = new Date().getTime();
@@ -59,13 +61,22 @@ app.post('/new', function(req, res) {
   });
 });
 
-app.get('/flock/*', function(req, res) {
-  var key = req.url.split('/').pop();
+app.get('/flock/:role/:accessKey', function(req, res) {
+  var role = req.params.role;
+  var key = req.params.accessKey;
+  var isAdmin = role === 'admin';
+  var query = {};
 
+  query[isAdmin ? 'adminKey': 'guestKey'] = key;
   db.getConnection().then(function() {
-    return db.find(flockCollectionName, {adminKey: key});
+    return db.find(flockCollectionName, query);
   }).then(function(flocks) {
-    res.json(flocks[0]);
+    var flock = flocks[0];
+
+    if (!isAdmin) {
+      flock.adminKey = null;
+    }
+    res.json(flock);
   }).catch(function(err) {
     res.sendStatus(500);
   });
