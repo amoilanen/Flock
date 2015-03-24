@@ -7,6 +7,16 @@ var FlockActions = {
     AppDispatcher.dispatch({
       actionType: FlockConstants.FLOCK_CREATE
     });
+  },
+
+  load: function(accessKey, role) {
+    AppDispatcher.dispatch({
+      actionType: FlockConstants.FLOCK_LOAD,
+      actionDetail: {
+        accessKey: accessKey,
+        role: role
+      }
+    });
   }
 };
 

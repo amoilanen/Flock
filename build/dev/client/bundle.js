@@ -41,6 +41,16 @@ var FlockActions = {
     AppDispatcher.dispatch({
       actionType: FlockConstants.FLOCK_CREATE
     });
+  },
+
+  load: function(accessKey, role) {
+    AppDispatcher.dispatch({
+      actionType: FlockConstants.FLOCK_LOAD,
+      actionDetail: {
+        accessKey: accessKey,
+        role: role
+      }
+    });
   }
 };
 
@@ -111,6 +121,9 @@ var Content = require('./Content.react');
 var Header = require('./Header.react');
 var React = require('react');
 var Router = require('react-router');
+var FlockActions = require('../actions/FlockActions');
+var FlockConstants = require('../constants/FlockConstants');
+var RouterStore = require('../stores/RouterStore');
 var FlockStore = require('../stores/FlockStore');
 var RouterStore = require('../stores/RouterStore');
 
@@ -134,21 +147,27 @@ var FlockApp = React.createClass({displayName: "FlockApp",
     });
   },
 
+  _onLoad: function() {
+    this.setState({
+      flock: FlockStore.getFlock()
+    });
+  },
+
   componentDidMount: function() {
     var self = this;
     var accessKey = this.getParams().accessKey;
     var role = this.getParams().role;
 
     if (accessKey) {
-      FlockStore.loadFlock(accessKey, role).then(function(flock) {
-        self.setState({flock: flock});
-      });
+      FlockActions.load(accessKey, role);
     }
-    FlockStore.addOnCreateListener(this._onNew);
+    FlockStore.on(FlockConstants.CREATE_EVENT, this._onNew);
+    FlockStore.on(FlockConstants.LOAD_EVENT, this._onLoad);
   },
 
   componentWillUnmount: function() {
-    FlockStore.removeOnCreateListener(this._onNew);
+    FlockStore.removeListener(FlockConstants.CREATE_EVENT, this._onNew);
+    FlockStore.removeListener(FlockConstants.LOAD_EVENT, this._onLoad);
   },
 
   render: function() {
@@ -165,7 +184,7 @@ var FlockApp = React.createClass({displayName: "FlockApp",
 });
 
 module.exports = FlockApp;
-},{"../stores/FlockStore":10,"../stores/RouterStore":11,"./Content.react":3,"./Header.react":6,"react":206,"react-router":47}],6:[function(require,module,exports){
+},{"../actions/FlockActions":2,"../constants/FlockConstants":8,"../stores/FlockStore":10,"../stores/RouterStore":11,"./Content.react":3,"./Header.react":6,"react":206,"react-router":47}],6:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var FlockActions = require('../actions/FlockActions');
@@ -244,7 +263,10 @@ var Participants = React.createClass({displayName: "Participants",
 module.exports = Participants;
 },{"react":206,"react-router":47}],8:[function(require,module,exports){
 module.exports = {
-  FLOCK_CREATE: null
+  FLOCK_CREATE: 'FLOCK_CREATE',
+  FLOCK_LOAD: 'FLOCK_LOAD',
+  CREATE_EVENT: 'CREATE_EVENT',
+  LOAD_EVENT: 'LOAD_EVENT'
 };
 
 },{}],9:[function(require,module,exports){
@@ -262,8 +284,6 @@ var assign = require('object-assign');
 var Router = require('react-router');
 var $ = require('jquery');
 
-var CREATE_EVENT = 'create';
-
 var DEFAULT_FLOCK = {
   createdAt: new Date().getTime(),
   name: '',
@@ -276,20 +296,6 @@ var DEFAULT_FLOCK = {
 var _flock = {};
 
 var FlockStore = assign({}, EventEmitter.prototype, {
-  addOnCreateListener: function(callback) {
-    this.on(CREATE_EVENT, callback);
-  },
-  removeOnCreateListener: function() {
-    this.removeListener(CREATE_EVENT, callback);
-  },
-  loadFlock: function(accessKey, role) {
-    var url = ['', 'flock', role, accessKey].join('/');
-
-    return Promise.resolve($.get(url)).then(function(flock) {
-      _flock = flock;
-      return flock;
-    });
-  },
   getFlock: function() {
     return _flock;
   }
@@ -302,7 +308,16 @@ AppDispatcher.register(function(action) {
     case FlockConstants.FLOCK_CREATE:
       Promise.resolve($.post('/new')).then(function(flock) {
         _flock = flock;
-        FlockStore.emit(CREATE_EVENT);
+        FlockStore.emit(FlockConstants.CREATE_EVENT);
+      });
+      break;
+    case FlockConstants.FLOCK_LOAD:
+      var $__0=   action.actionDetail,role=$__0.role,accessKey=$__0.accessKey;
+      var url = ['', 'flock', role, accessKey].join('/');
+
+      Promise.resolve($.get(url)).then(function(flock) {
+        _flock = flock;
+        FlockStore.emit(FlockConstants.LOAD_EVENT);
       });
       break;
 
