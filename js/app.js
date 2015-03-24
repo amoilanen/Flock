@@ -3,6 +3,7 @@ var Router = require('react-router');
 var FlockApp = require('./components/FlockApp.react.js');
 var Event = require('./components/Event.react.js');
 var Participants = require('./components/Participants.react.js');
+var RouterStore = require('./stores/RouterStore.js');
 var {Route, Handler} = Router;
 
 var routes = (
@@ -17,8 +18,15 @@ var routes = (
 //TODO: Default route handler
 //TODO: 'Not found' route handler
 
-Router.run(routes, Router.HistoryLocation, function (Handler) {
+var router = Router.create({
+  routes: routes,
+  location: Router.HistoryLocation
+});
+
+RouterStore.set(router);
+
+router.run(function(Handler) {
   /* jshint ignore:start */
-  React.render(<Handler/>, document.getElementById('flockapp'));
+  var Router = React.render(<Handler/>, document.getElementById('flockapp'));
   /* jshint ignore:end */
 });

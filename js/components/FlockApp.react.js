@@ -3,11 +3,7 @@ var Header = require('./Header.react');
 var React = require('react');
 var Router = require('react-router');
 var FlockStore = require('../stores/FlockStore');
-
-//TODO: Read this and query for the flock earlier and query for the flock
-//TODO: Do not reload the whole app when navigating to a new URL
-//TODO: Load current flock only once when the top app component is rendered if it is required
-//and then only when a new flock is created
+var RouterStore = require('../stores/RouterStore');
 
 var FlockApp = React.createClass({
 
@@ -19,8 +15,14 @@ var FlockApp = React.createClass({
     };
   },
 
-  _onCreate: function() {
-    console.log("New flock created");
+  _onNew: function() {
+    this.setState({
+      flock: FlockStore.getFlock()
+    });
+    RouterStore.get().transitionTo('event', {
+      accessKey: this.state.flock.adminKey,
+      role: 'admin'
+    });
   },
 
   componentDidMount: function() {
@@ -33,11 +35,11 @@ var FlockApp = React.createClass({
         self.setState({flock: flock})
       });
     }
-    FlockStore.addOnCreateListener(this._onCreate);
+    FlockStore.addOnCreateListener(this._onNew);
   },
 
   componentWillUnmount: function() {
-    FlockStore.removeOnCreateListener(this._onChange);
+    FlockStore.removeOnCreateListener(this._onNew);
   },
 
   render: function() {

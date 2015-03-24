@@ -5,6 +5,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var FlockConstants = require('../constants/FlockConstants');
 var assign = require('object-assign');
+var Router = require('react-router');
 var $ = require('jquery');
 
 var CREATE_EVENT = 'create';
@@ -18,7 +19,7 @@ var DEFAULT_FLOCK = {
   when: ''
 };
 
-var _currentFlock = {};
+var _flock = {};
 
 var FlockStore = assign({}, EventEmitter.prototype, {
   addOnCreateListener: function(callback) {
@@ -31,9 +32,12 @@ var FlockStore = assign({}, EventEmitter.prototype, {
     var url = ['', 'flock', role, accessKey].join('/');
 
     return Promise.resolve($.get(url)).then(function(flock) {
-      _currentFlock = flock;
+      _flock = flock;
       return flock;
     });
+  },
+  getFlock: function() {
+    return _flock;
   }
 });
 
@@ -43,9 +47,8 @@ AppDispatcher.register(function(action) {
   switch(action.actionType) {
     case FlockConstants.FLOCK_CREATE:
       Promise.resolve($.post('/new')).then(function(flock) {
+        _flock = flock;
         FlockStore.emit(CREATE_EVENT);
-        _currentFlock = flock;
-        document.location.pathname = '/event/admin/' + flock.adminKey;
       });
       break;
 
