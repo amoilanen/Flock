@@ -114,11 +114,6 @@ var Router = require('react-router');
 var FlockStore = require('../stores/FlockStore');
 var RouterStore = require('../stores/RouterStore');
 
-//TODO: Read this and query for the flock earlier and query for the flock
-//TODO: Do not reload the whole app when navigating to a new URL
-//TODO: Load current flock only once when the top app component is rendered if it is required
-//and then only when a new flock is created
-
 var FlockApp = React.createClass({displayName: "FlockApp",
 
   mixins: [Router.State],
@@ -146,7 +141,7 @@ var FlockApp = React.createClass({displayName: "FlockApp",
 
     if (accessKey) {
       FlockStore.loadFlock(accessKey, role).then(function(flock) {
-        self.setState({flock: flock})
+        self.setState({flock: flock});
       });
     }
     FlockStore.addOnCreateListener(this._onNew);
@@ -184,14 +179,11 @@ var Header = React.createClass({displayName: "Header",
   render: function() {
     var currentPath = Router.HistoryLocation.getCurrentPath().split('/');
     var topPage = currentPath[1];
-    var isOnHomePage = (topPage.length == 0);
+    var isOnHomePage = (topPage.length === 0);
 
     var eventTabClass = (isOnHomePage ? "header-tab disabled" : "header-tab");
     var participantsTabClass = (isOnHomePage ? "header-tab disabled" : "header-tab");
     var inviteButtonClass = (isOnHomePage ? "header-button disabled" : "header-button");
-
-    console.log('currentPath = ', currentPath);
-    console.log('topPage = ', topPage);
 
     if (topPage === 'event') {
       eventTabClass += ' active';

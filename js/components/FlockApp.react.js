@@ -32,7 +32,7 @@ var FlockApp = React.createClass({
 
     if (accessKey) {
       FlockStore.loadFlock(accessKey, role).then(function(flock) {
-        self.setState({flock: flock})
+        self.setState({flock: flock});
       });
     }
     FlockStore.addOnCreateListener(this._onNew);

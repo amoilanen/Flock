@@ -1,1 +1,128 @@
-header{border-bottom:4px solid rgba(0,0,0,.15);height:46px;padding-left:150px;padding-right:150px}.header-button-container{float:right}.header-button,.header-tab{position:relative;height:42px;display:inline-block}.content,.logo{position:absolute}.header-tab{color:#66757f;border-bottom:4px solid #fff}.header-tab.active,.header-tab:hover{border-bottom:4px solid #0084b4}.header-button:hover,.header-tab:hover{cursor:pointer}.header-button.disabled,.header-tab.disabled{opacity:.35}.header-button.disabled:hover,.header-tab.disabled:hover{cursor:default}.header-tab:hover{color:#0084b4}.header-tab.disabled:hover{color:#66757f;border-bottom:4px solid #fff}.header-button{background-color:#4ea8cc;color:#fff;border-radius:8px;margin-top:2px;margin-right:2px}.header-button:hover{background-color:#0084b4}.header-button.disabled:hover{background-color:#4ea8cc}.header-button:active{background-color:#005d7e}.header-button.disabled:active{background-color:#4ea8cc}.header-button i,.header-tab i{line-height:46px;float:left;margin-right:4px;margin-left:16px}.header-button-label,.header-tab-label{line-height:46px;float:right;margin-right:16px;margin-left:4px}@media (max-width:600px){header{padding-left:0}}@font-face{font-family:Frosting;src:url(/fonts/frosting-for-breakfast/Frosting-for-Breakfast_regular.otf)}.content{top:48px;left:0;right:0;bottom:0;background:linear-gradient(-45deg,#bce0ee,#29b8e5)}.logo{font-family:Frosting;bottom:0;right:16px;font-size:52px}.logo .subtitle{margin-left:8px;font-size:36px}.event-details{background-color:#fff;border-radius:8px;margin-left:150px;margin-top:50px;padding:16px;width:600px;color:#66757f}.event-details label{display:inline-block;margin-right:16px;min-width:80px;width:20%}.event-details .field{margin-top:16px}body{margin:0;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;transition:all .15s ease-in-out 0s}
+header {
+  border-bottom: 4px solid rgba(0, 0, 0, 0.15);
+  height: 46px;
+  padding-left: 150px;
+  padding-right: 150px;
+}
+.header-button-container {
+  float: right;
+}
+.header-tab,
+.header-button {
+  position: relative;
+  height: 42px;
+  display: inline-block;
+}
+.header-tab {
+  color: #66757f;
+  border-bottom: 4px solid white;
+}
+.header-tab:hover,
+.header-button:hover {
+  cursor: pointer;
+}
+.header-tab.disabled,
+.header-button.disabled {
+  opacity: 0.35;
+}
+.header-tab.disabled:hover,
+.header-button.disabled:hover {
+  cursor: default;
+}
+.header-tab:hover {
+  color: #0084b4;
+  border-bottom: 4px solid #0084b4;
+}
+.header-tab.active {
+  border-bottom: 4px solid #0084b4;
+}
+.header-tab.disabled:hover {
+  color: #66757f;
+  border-bottom: 4px solid white;
+}
+.header-button {
+  background-color: #4ea8cc;
+  color: white;
+  border-radius: 8px;
+  margin-top: 2px;
+  margin-right: 2px;
+}
+.header-button:hover {
+  background-color: #0084b4;
+}
+.header-button.disabled:hover {
+  background-color: #4ea8cc;
+}
+.header-button:active {
+  background-color: #005d7e;
+}
+.header-button.disabled:active {
+  background-color: #4ea8cc;
+}
+.header-tab i,
+.header-button i {
+  line-height: 46px;
+  float: left;
+  margin-right: 4px;
+  margin-left: 16px;
+}
+.header-tab-label,
+.header-button-label {
+  line-height: 46px;
+  float: right;
+  margin-right: 16px;
+  margin-left: 4px;
+}
+@media (max-width: 600px) {
+  header {
+    padding-left: 0px;
+  }
+}
+@font-face {
+  font-family: 'Frosting';
+  src: url('/fonts/frosting-for-breakfast/Frosting-for-Breakfast_regular.otf');
+}
+.content {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(-45deg, #bce0ee, #29b8e5);
+}
+.logo {
+  font-family: 'Frosting';
+  font-size: 48px;
+  bottom: 0;
+  position: absolute;
+  right: 16px;
+  font-size: 52px;
+}
+.logo .subtitle {
+  margin-left: 8px;
+  font-size: 36px;
+}
+/* TODO: Support mobile resolution */
+.event-details {
+  background-color: white;
+  border-radius: 8px;
+  margin-left: 150px;
+  margin-top: 50px;
+  padding: 16px;
+  width: 600px;
+  color: #66757f;
+}
+.event-details label {
+  display: inline-block;
+  margin-right: 16px;
+  min-width: 80px;
+  width: 20%;
+}
+.event-details .field {
+  margin-top: 16px;
+}
+body {
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  transition: all 0.15s ease-in-out 0s;
+}
