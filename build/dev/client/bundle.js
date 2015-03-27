@@ -43,10 +43,21 @@ var FlockActions = {
     });
   },
 
-  load: function(accessKey, role) {
+  load: function(role, accessKey) {
     AppDispatcher.dispatch({
       actionType: FlockConstants.FLOCK_LOAD,
       actionDetail: {
+        accessKey: accessKey,
+        role: role
+      }
+    });
+  },
+
+  openTab: function(tab, role, accessKey) {
+    AppDispatcher.dispatch({
+      actionType: FlockConstants.OPEN_TAB,
+      actionDetail: {
+        tab: tab,
         accessKey: accessKey,
         role: role
       }
@@ -137,17 +148,7 @@ var FlockApp = React.createClass({displayName: "FlockApp",
     };
   },
 
-  _onNew: function() {
-    this.setState({
-      flock: FlockStore.getFlock()
-    });
-    RouterStore.get().transitionTo('event', {
-      accessKey: this.state.flock.adminKey,
-      role: 'admin'
-    });
-  },
-
-  _onLoad: function() {
+  _onFlockUpdate: function() {
     this.setState({
       flock: FlockStore.getFlock()
     });
@@ -159,15 +160,15 @@ var FlockApp = React.createClass({displayName: "FlockApp",
     var role = this.getParams().role;
 
     if (accessKey) {
-      FlockActions.load(accessKey, role);
+      FlockActions.load(role, accessKey);
     }
-    FlockStore.on(FlockConstants.CREATE_EVENT, this._onNew);
-    FlockStore.on(FlockConstants.LOAD_EVENT, this._onLoad);
+    FlockStore.on(FlockConstants.CREATE_EVENT, this._onFlockUpdate);
+    FlockStore.on(FlockConstants.LOAD_EVENT, this._onFlockUpdate);
   },
 
   componentWillUnmount: function() {
-    FlockStore.removeListener(FlockConstants.CREATE_EVENT, this._onNew);
-    FlockStore.removeListener(FlockConstants.LOAD_EVENT, this._onLoad);
+    FlockStore.removeListener(FlockConstants.CREATE_EVENT, this._onFlockUpdate);
+    FlockStore.removeListener(FlockConstants.LOAD_EVENT, this._onFlockUpdate);
   },
 
   render: function() {
@@ -197,18 +198,16 @@ var Header = React.createClass({displayName: "Header",
     FlockActions.create();
   },
 
+  _openTab: function(tab) {
+    FlockActions.openTab(tab, FlockStore.getRole(), FlockStore.getAccessKey());
+  },
+
   _openEventTab: function() {
-    RouterStore.get().transitionTo('event', {
-      accessKey: FlockStore.getFlock().adminKey,
-      role: 'admin'
-    });
+    this._openTab('event');
   },
 
   _openParticipantsTab: function() {
-    RouterStore.get().transitionTo('participants', {
-      accessKey: FlockStore.getFlock().adminKey,
-      role: 'admin'
-    });
+    this._openTab('participants');
   },
 
   render: function() {
@@ -284,7 +283,8 @@ module.exports = {
   FLOCK_CREATE: 'FLOCK_CREATE',
   FLOCK_LOAD: 'FLOCK_LOAD',
   CREATE_EVENT: 'CREATE_EVENT',
-  LOAD_EVENT: 'LOAD_EVENT'
+  LOAD_EVENT: 'LOAD_EVENT',
+  OPEN_TAB: 'OPEN_TAB'
 };
 
 },{}],9:[function(require,module,exports){
@@ -302,6 +302,8 @@ var assign = require('object-assign');
 var Router = require('react-router');
 var $ = require('jquery');
 
+var RouterStore = require('./RouterStore');
+
 var DEFAULT_FLOCK = {
   createdAt: new Date().getTime(),
   name: '',
@@ -312,20 +314,30 @@ var DEFAULT_FLOCK = {
 };
 
 var _flock = {};
+var _role;
 
 var FlockStore = assign({}, EventEmitter.prototype, {
   getFlock: function() {
     return _flock;
+  },
+  getRole: function() {
+    return _role;
+  },
+  getAccessKey: function() {
+    return _role === 'admin' ? _flock.adminKey : _flock.guestKey;
   }
 });
 
 AppDispatcher.register(function(action) {
-  var text;
-
   switch(action.actionType) {
     case FlockConstants.FLOCK_CREATE:
       Promise.resolve($.post('/new')).then(function(flock) {
         _flock = flock;
+        RouterStore.get().transitionTo('event', {
+          accessKey: flock.adminKey,
+          role: 'admin'
+        });
+        _role = 'admin';
         FlockStore.emit(FlockConstants.CREATE_EVENT);
       });
       break;
@@ -333,6 +345,7 @@ AppDispatcher.register(function(action) {
       var $__0=   action.actionDetail,role=$__0.role,accessKey=$__0.accessKey;
       var url = ['', 'flock', role, accessKey].join('/');
 
+      _role = role;
       Promise.resolve($.get(url)).then(function(flock) {
         _flock = flock;
         FlockStore.emit(FlockConstants.LOAD_EVENT);
@@ -344,8 +357,11 @@ AppDispatcher.register(function(action) {
 });
 
 module.exports = FlockStore;
-},{"../constants/FlockConstants":8,"../dispatcher/AppDispatcher":9,"es6-promise":14,"events":12,"jquery":18,"object-assign":19,"react-router":47}],11:[function(require,module,exports){
-var _router  = null;
+},{"../constants/FlockConstants":8,"../dispatcher/AppDispatcher":9,"./RouterStore":11,"es6-promise":14,"events":12,"jquery":18,"object-assign":19,"react-router":47}],11:[function(require,module,exports){
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var FlockConstants = require('../constants/FlockConstants');
+
+var _router;
 
 function set(router) {
   _router = router;
@@ -355,11 +371,24 @@ function get() {
   return _router;
 }
 
+AppDispatcher.register(function(action) {
+  switch(action.actionType) {
+    case FlockConstants.OPEN_TAB:
+      _router.transitionTo(action.actionDetail.tab, {
+        accessKey: action.actionDetail.accessKey,
+        role: action.actionDetail.role
+      });
+      break;
+
+    default:
+  }
+});
+
 module.exports = {
   set: set,
   get: get
 };
-},{}],12:[function(require,module,exports){
+},{"../constants/FlockConstants":8,"../dispatcher/AppDispatcher":9}],12:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a

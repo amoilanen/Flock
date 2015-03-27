@@ -18,17 +18,7 @@ var FlockApp = React.createClass({
     };
   },
 
-  _onNew: function() {
-    this.setState({
-      flock: FlockStore.getFlock()
-    });
-    RouterStore.get().transitionTo('event', {
-      accessKey: this.state.flock.adminKey,
-      role: 'admin'
-    });
-  },
-
-  _onLoad: function() {
+  _onFlockUpdate: function() {
     this.setState({
       flock: FlockStore.getFlock()
     });
@@ -40,15 +30,15 @@ var FlockApp = React.createClass({
     var role = this.getParams().role;
 
     if (accessKey) {
-      FlockActions.load(accessKey, role);
+      FlockActions.load(role, accessKey);
     }
-    FlockStore.on(FlockConstants.CREATE_EVENT, this._onNew);
-    FlockStore.on(FlockConstants.LOAD_EVENT, this._onLoad);
+    FlockStore.on(FlockConstants.CREATE_EVENT, this._onFlockUpdate);
+    FlockStore.on(FlockConstants.LOAD_EVENT, this._onFlockUpdate);
   },
 
   componentWillUnmount: function() {
-    FlockStore.removeListener(FlockConstants.CREATE_EVENT, this._onNew);
-    FlockStore.removeListener(FlockConstants.LOAD_EVENT, this._onLoad);
+    FlockStore.removeListener(FlockConstants.CREATE_EVENT, this._onFlockUpdate);
+    FlockStore.removeListener(FlockConstants.LOAD_EVENT, this._onFlockUpdate);
   },
 
   render: function() {

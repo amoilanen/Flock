@@ -10,18 +10,16 @@ var Header = React.createClass({
     FlockActions.create();
   },
 
+  _openTab: function(tab) {
+    FlockActions.openTab(tab, FlockStore.getRole(), FlockStore.getAccessKey());
+  },
+
   _openEventTab: function() {
-    RouterStore.get().transitionTo('event', {
-      accessKey: FlockStore.getFlock().adminKey,
-      role: 'admin'
-    });
+    this._openTab('event');
   },
 
   _openParticipantsTab: function() {
-    RouterStore.get().transitionTo('participants', {
-      accessKey: FlockStore.getFlock().adminKey,
-      role: 'admin'
-    });
+    this._openTab('participants');
   },
 
   render: function() {

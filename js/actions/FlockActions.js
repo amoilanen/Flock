@@ -9,10 +9,21 @@ var FlockActions = {
     });
   },
 
-  load: function(accessKey, role) {
+  load: function(role, accessKey) {
     AppDispatcher.dispatch({
       actionType: FlockConstants.FLOCK_LOAD,
       actionDetail: {
+        accessKey: accessKey,
+        role: role
+      }
+    });
+  },
+
+  openTab: function(tab, role, accessKey) {
+    AppDispatcher.dispatch({
+      actionType: FlockConstants.OPEN_TAB,
+      actionDetail: {
+        tab: tab,
         accessKey: accessKey,
         role: role
       }
