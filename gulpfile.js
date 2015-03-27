@@ -64,7 +64,6 @@ gulp.task('lint', function() {
 
 gulp.task('watch', function() {
   gulp.watch('js/**/*.js', ['build-client']);
-  gulp.watch('server/**/*.js', ['build-server']);
   gulp.watch('styles/**/*.js', ['build-styles']);
 });
 
@@ -113,6 +112,7 @@ gulp.task('default', gulpSequence(
 ));
 
 gulp.task('dev', gulpSequence(
+  'watch',
   'build-styles',
   'build-client'
 ));
