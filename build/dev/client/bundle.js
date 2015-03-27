@@ -11,7 +11,7 @@ var routes = (
   /* jshint ignore:start */
   React.createElement(Route, {handler: FlockApp}, 
     React.createElement(Route, {name: "event", path: "event/:role/:accessKey", handler: Event}), 
-    React.createElement(Route, {name: "participation", path: "participants/:role/:accessKey", handler: Participants})
+    React.createElement(Route, {name: "participants", path: "participants/:role/:accessKey", handler: Participants})
   )
   /* jshint ignore:end */
 );
@@ -187,12 +187,28 @@ module.exports = FlockApp;
 },{"../actions/FlockActions":2,"../constants/FlockConstants":8,"../stores/FlockStore":10,"../stores/RouterStore":11,"./Content.react":3,"./Header.react":6,"react":206,"react-router":47}],6:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
+var FlockStore = require('../stores/FlockStore');
+var RouterStore = require('../stores/RouterStore');
 var FlockActions = require('../actions/FlockActions');
 
 var Header = React.createClass({displayName: "Header",
 
   _onClick: function() {
     FlockActions.create();
+  },
+
+  _openEventTab: function() {
+    RouterStore.get().transitionTo('event', {
+      accessKey: FlockStore.getFlock().adminKey,
+      role: 'admin'
+    });
+  },
+
+  _openParticipantsTab: function() {
+    RouterStore.get().transitionTo('participants', {
+      accessKey: FlockStore.getFlock().adminKey,
+      role: 'admin'
+    });
   },
 
   render: function() {
@@ -213,11 +229,13 @@ var Header = React.createClass({displayName: "Header",
       /* jshint ignore:start */
       React.createElement("header", null, 
         React.createElement("span", {className: "header-tab-container"}, 
-          React.createElement("span", {className: eventTabClass, onClick: isOnHomePage ? function() {}: this._onClick}, 
+          React.createElement("span", {className: eventTabClass, 
+                onClick: isOnHomePage ? function() {}: this._openEventTab}, 
             React.createElement("i", {className: "fa fa-2x fa-cog"}), 
             React.createElement("span", {className: "event header-tab-label"}, "Event")
           ), 
-          React.createElement("span", {className: participantsTabClass, onClick: isOnHomePage ? function() {}: this._onClick}, 
+          React.createElement("span", {className: participantsTabClass, 
+                onClick: isOnHomePage ? function() {}: this._openParticipantsTab}, 
             React.createElement("i", {className: "fa fa-2x fa-users"}), 
             React.createElement("span", {className: "participants header-tab-label"}, "Participants")
           )
@@ -239,7 +257,7 @@ var Header = React.createClass({displayName: "Header",
 });
 
 module.exports = Header;
-},{"../actions/FlockActions":2,"react":206,"react-router":47}],7:[function(require,module,exports){
+},{"../actions/FlockActions":2,"../stores/FlockStore":10,"../stores/RouterStore":11,"react":206,"react-router":47}],7:[function(require,module,exports){
 var Router = require('react-router');
 var React = require('react');
 

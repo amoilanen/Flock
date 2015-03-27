@@ -1,11 +1,27 @@
 var React = require('react');
 var Router = require('react-router');
+var FlockStore = require('../stores/FlockStore');
+var RouterStore = require('../stores/RouterStore');
 var FlockActions = require('../actions/FlockActions');
 
 var Header = React.createClass({
 
   _onClick: function() {
     FlockActions.create();
+  },
+
+  _openEventTab: function() {
+    RouterStore.get().transitionTo('event', {
+      accessKey: FlockStore.getFlock().adminKey,
+      role: 'admin'
+    });
+  },
+
+  _openParticipantsTab: function() {
+    RouterStore.get().transitionTo('participants', {
+      accessKey: FlockStore.getFlock().adminKey,
+      role: 'admin'
+    });
   },
 
   render: function() {
@@ -26,11 +42,13 @@ var Header = React.createClass({
       /* jshint ignore:start */
       <header>
         <span className="header-tab-container">
-          <span className={eventTabClass} onClick={isOnHomePage ? function() {}: this._onClick}>
+          <span className={eventTabClass}
+                onClick={isOnHomePage ? function() {}: this._openEventTab}>
             <i className="fa fa-2x fa-cog"></i>
             <span className="event header-tab-label">Event</span>
           </span>
-          <span className={participantsTabClass} onClick={isOnHomePage ? function() {}: this._onClick}>
+          <span className={participantsTabClass}
+                onClick={isOnHomePage ? function() {}: this._openParticipantsTab}>
             <i className="fa fa-2x fa-users"></i>
             <span className="participants header-tab-label">Participants</span>
           </span>
