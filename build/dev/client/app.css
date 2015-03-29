@@ -110,6 +110,7 @@ header {
   margin-top: 50px;
   padding: 16px;
   width: 600px;
+  position: relative;
   color: #66757f;
 }
 .event-details label {
@@ -120,6 +121,16 @@ header {
 }
 .event-details .field {
   margin-top: 16px;
+}
+.event-details .unsaved-changes {
+  position: absolute;
+  display: none;
+  top: 4px;
+  right: 4px;
+  font-size: 1.5em;
+}
+.event-details .unsaved-changes.has-changes {
+  display: inline-block;
 }
 body {
   margin: 0;

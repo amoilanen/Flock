@@ -35,6 +35,14 @@ var Event = React.createClass({
     this.setState(newState);
   },
 
+  _hasChanges: function() {
+    var self = this;
+
+    return Event.FIELDS.some(function(field) {
+      return self.props.flock[field] !== self.state[field];
+    });
+  },
+
   render: function() {
     var self = this;
 
@@ -49,11 +57,13 @@ var Event = React.createClass({
         /* jshint ignore:end */
       );
     });
+    var unsavedChangesIndicatorClass = (self._hasChanges() ? 'unsaved-changes has-changes': 'unsaved-changes');
 
     return (
       /* jshint ignore:start */
       <section className="event-details">
         {fields}
+        <span className={unsavedChangesIndicatorClass}>*</span>
       </section>
       /* jshint ignore:end */
     );

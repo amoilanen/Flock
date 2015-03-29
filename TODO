@@ -10,7 +10,7 @@
      --- The created event can be accessed via this URL /guest/event/{attend_id} - DONE
      --- Event details can be edited and saved by an admin
      --- Event details can only be viewed and not edited by a guest
-     --- It is possible to switch between tabs
+     --- It is possible to switch between tabs - DONE
 
      --- If non-existing eventId then empty Event tab with an error message is displayed
      --- If non-existing eventId then empty Participants tab with an error message is displayed
@@ -24,6 +24,7 @@
 - Add unit testing infrastructure and add tests for the implemented scenarios, add tests for id generator
 - Participants tab contents is rendered, all the participants are shown
 
+- It is possible to delete an event for the admin
 - The id is not passed as part of the URL but as parameters in the body
 
 - Support tablet resolution (iPad)
