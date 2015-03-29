@@ -90,36 +90,61 @@ var Content = React.createClass({displayName: "Content",
 module.exports = Content;
 },{"react":206,"react-router":47}],4:[function(require,module,exports){
 var React = require('react');
-var FlockStore = require('../stores/FlockStore');
 
 var Event = React.createClass({displayName: "Event",
 
-  //TODO: Support editing the field of the current flock
+  statics: {
+    FIELDS: ['name', 'organizer', 'details', 'where', 'when']
+  },
+
+  getInitialState: function() {
+    return {
+      name: '',
+      organizer: '',
+      details: '',
+      where: '',
+      when: ''
+    };
+  },
+
+  componentWillReceiveProps: function(properties) {
+    var flock = properties.flock;
+
+    this.setState({
+      name: flock.name,
+      organizer: flock.organizer,
+      details: flock.details,
+      where: flock.where,
+      when: flock.when
+    });
+  },
+
+  _onChange: function(field, event) {
+    var newState = {};
+
+    newState[field] = event.target.value;
+    this.setState(newState);
+  },
+
   render: function() {
-    console.log('Loaded events tab = ', this.props.flock);
+    var self = this;
+
+    var fields = Event.FIELDS.map(function(field, idx) {
+      return (
+        /* jshint ignore:start */
+        React.createElement("div", {key: idx, className: "field"}, 
+          React.createElement("label", null, field), 
+          React.createElement("input", {type: "text", value: self.state[field], 
+            onChange: self._onChange.bind(self, field)})
+        )
+        /* jshint ignore:end */
+      );
+    });
+
     return (
       /* jshint ignore:start */
       React.createElement("section", {className: "event-details"}, 
-        React.createElement("div", {className: "field"}, 
-          React.createElement("label", null, "Name"), 
-          React.createElement("input", {type: "text", value: this.props.flock.name})
-        ), 
-        React.createElement("div", {className: "field"}, 
-          React.createElement("label", null, "Organizer"), 
-          React.createElement("input", {type: "text", value: this.props.flock.organizer})
-        ), 
-        React.createElement("div", {className: "field"}, 
-          React.createElement("label", null, "Details"), 
-          React.createElement("input", {type: "text", value: this.props.flock.details})
-        ), 
-        React.createElement("div", {className: "field"}, 
-          React.createElement("label", null, "Where"), 
-          React.createElement("input", {type: "text", value: this.props.flock.where})
-        ), 
-        React.createElement("div", {className: "field"}, 
-          React.createElement("label", null, "When"), 
-          React.createElement("input", {type: "text", value: this.props.flock.when})
-        )
+        fields
       )
       /* jshint ignore:end */
     );
@@ -127,7 +152,7 @@ var Event = React.createClass({displayName: "Event",
 });
 
 module.exports = Event;
-},{"../stores/FlockStore":10,"react":206}],5:[function(require,module,exports){
+},{"react":206}],5:[function(require,module,exports){
 var Content = require('./Content.react');
 var Header = require('./Header.react');
 var React = require('react');
