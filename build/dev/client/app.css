@@ -1,3 +1,49 @@
+/* Button */
+.fl-button {
+  position: relative;
+  height: 42px;
+  display: inline-block;
+}
+.fl-button:hover {
+  cursor: pointer;
+}
+.fl-button.disabled {
+  opacity: 0.35;
+}
+.fl-button.disabled:hover {
+  cursor: default;
+}
+.fl-button {
+  background-color: #4ea8cc;
+  color: white;
+  border-radius: 8px;
+  margin-top: 2px;
+  margin-right: 2px;
+}
+.fl-button:hover {
+  background-color: #0084b4;
+}
+.fl-button.disabled:hover {
+  background-color: #4ea8cc;
+}
+.fl-button:active {
+  background-color: #005d7e;
+}
+.fl-button.disabled:active {
+  background-color: #4ea8cc;
+}
+.fl-button i {
+  line-height: 46px;
+  float: left;
+  margin-right: 4px;
+  margin-left: 16px;
+}
+.fl-button-label {
+  line-height: 46px;
+  float: right;
+  margin-right: 16px;
+  margin-left: 4px;
+}
 header {
   border-bottom: 4px solid rgba(0, 0, 0, 0.15);
   height: 46px;
@@ -7,8 +53,7 @@ header {
 .header-button-container {
   float: right;
 }
-.header-tab,
-.header-button {
+.header-tab {
   position: relative;
   height: 42px;
   display: inline-block;
@@ -17,16 +62,13 @@ header {
   color: #66757f;
   border-bottom: 4px solid white;
 }
-.header-tab:hover,
-.header-button:hover {
+.header-tab:hover {
   cursor: pointer;
 }
-.header-tab.disabled,
-.header-button.disabled {
+.header-tab.disabled {
   opacity: 0.35;
 }
-.header-tab.disabled:hover,
-.header-button.disabled:hover {
+.header-tab.disabled:hover {
   cursor: default;
 }
 .header-tab:hover {
@@ -40,34 +82,13 @@ header {
   color: #66757f;
   border-bottom: 4px solid white;
 }
-.header-button {
-  background-color: #4ea8cc;
-  color: white;
-  border-radius: 8px;
-  margin-top: 2px;
-  margin-right: 2px;
-}
-.header-button:hover {
-  background-color: #0084b4;
-}
-.header-button.disabled:hover {
-  background-color: #4ea8cc;
-}
-.header-button:active {
-  background-color: #005d7e;
-}
-.header-button.disabled:active {
-  background-color: #4ea8cc;
-}
-.header-tab i,
-.header-button i {
+.header-tab i {
   line-height: 46px;
   float: left;
   margin-right: 4px;
   margin-left: 16px;
 }
-.header-tab-label,
-.header-button-label {
+.header-tab-label {
   line-height: 46px;
   float: right;
   margin-right: 16px;

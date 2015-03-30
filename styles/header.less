@@ -1,8 +1,6 @@
 @header-border-bottom-color: @primary-color1;
 @header-color: @primary-color2;
-@header-color-active: @primary-color3;
 @header-color-hover: @primary-color4;
-@header-button-background-color: @primary-color5;
 
 header {
   border-bottom: 4px solid @header-border-bottom-color;
@@ -15,8 +13,7 @@ header {
   float: right;
 }
 
-.header-tab,
-.header-button {
+.header-tab {
   position: relative;
   height: 42px;
   display: inline-block;
@@ -27,18 +24,15 @@ header {
   border-bottom: 4px solid white;
 }
 
-.header-tab:hover,
-.header-button:hover {
+.header-tab:hover {
   cursor: pointer;
 }
 
-.header-tab.disabled,
-.header-button.disabled {
+.header-tab.disabled {
   opacity: 0.35;
 }
 
-.header-tab.disabled:hover,
-.header-button.disabled:hover {
+.header-tab.disabled:hover {
   cursor: default;
 }
 
@@ -56,40 +50,14 @@ header {
   border-bottom: 4px solid white;
 }
 
-.header-button {
-  background-color: @header-button-background-color;
-  color: white;
-  border-radius: 8px;
-  margin-top: 2px;
-  margin-right: 2px;
-}
-
-.header-button:hover {
-  background-color: @header-color-hover;
-}
-
-.header-button.disabled:hover {
-  background-color: @header-button-background-color;
-}
-
-.header-button:active {
-  background-color: @header-color-active;
-}
-
-.header-button.disabled:active {
-  background-color: @header-button-background-color;
-}
-
-.header-tab i,
-.header-button i {
+.header-tab i {
   line-height: 46px;
   float: left;
   margin-right: 4px;
   margin-left: 16px;
 }
 
-.header-tab-label,
-.header-button-label {
+.header-tab-label {
   line-height: 46px;
   float: right;
   margin-right: 16px;

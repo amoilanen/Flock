@@ -1,0 +1,60 @@
+@fl-button-background-color: @primary-color5;
+@button-color-active: @primary-color3;
+@button-color-hover: @primary-color4;
+
+/* Button */
+.fl-button {
+  position: relative;
+  height: 42px;
+  display: inline-block;
+}
+
+.fl-button:hover {
+  cursor: pointer;
+}
+
+.fl-button.disabled {
+  opacity: 0.35;
+}
+
+.fl-button.disabled:hover {
+  cursor: default;
+}
+
+.fl-button {
+  background-color: @fl-button-background-color;
+  color: white;
+  border-radius: 8px;
+  margin-top: 2px;
+  margin-right: 2px;
+}
+
+.fl-button:hover {
+  background-color: @button-color-hover;
+}
+
+.fl-button.disabled:hover {
+  background-color: @fl-button-background-color;
+}
+
+.fl-button:active {
+  background-color: @button-color-active;
+}
+
+.fl-button.disabled:active {
+  background-color: @fl-button-background-color;
+}
+
+.fl-button i {
+  line-height: 46px;
+  float: left;
+  margin-right: 4px;
+  margin-left: 16px;
+}
+
+.fl-button-label {
+  line-height: 46px;
+  float: right;
+  margin-right: 16px;
+  margin-left: 4px;
+}
