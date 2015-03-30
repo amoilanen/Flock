@@ -1,4 +1,5 @@
 var React = require('react');
+var Button = require('./widgets/Button.react');
 
 var Event = React.createClass({
 
@@ -43,6 +44,14 @@ var Event = React.createClass({
     });
   },
 
+  _save: function() {
+    console.log('Saving...');
+  },
+
+  _cancel: function() {
+    console.log('Cancelling...');
+  },
+
   render: function() {
     var self = this;
 
@@ -64,6 +73,10 @@ var Event = React.createClass({
       <section className="event-details">
         {fields}
         <span className={unsavedChangesIndicatorClass}>*</span>
+        <footer>
+          <Button label="Save" onClick={this._save} />
+          <Button label="Cancel" onClick={this._cancel} />
+        </footer>
       </section>
       /* jshint ignore:end */
     );

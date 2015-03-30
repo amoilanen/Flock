@@ -90,6 +90,7 @@ var Content = React.createClass({displayName: "Content",
 module.exports = Content;
 },{"react":207,"react-router":48}],4:[function(require,module,exports){
 var React = require('react');
+var Button = require('./widgets/Button.react');
 
 var Event = React.createClass({displayName: "Event",
 
@@ -134,6 +135,14 @@ var Event = React.createClass({displayName: "Event",
     });
   },
 
+  _save: function() {
+    console.log('Saving...');
+  },
+
+  _cancel: function() {
+    console.log('Cancelling...');
+  },
+
   render: function() {
     var self = this;
 
@@ -154,7 +163,11 @@ var Event = React.createClass({displayName: "Event",
       /* jshint ignore:start */
       React.createElement("section", {className: "event-details"}, 
         fields, 
-        React.createElement("span", {className: unsavedChangesIndicatorClass}, "*")
+        React.createElement("span", {className: unsavedChangesIndicatorClass}, "*"), 
+        React.createElement("footer", null, 
+          React.createElement(Button, {label: "Save", onClick: this._save}), 
+          React.createElement(Button, {label: "Cancel", onClick: this._cancel})
+        )
       )
       /* jshint ignore:end */
     );
@@ -162,7 +175,7 @@ var Event = React.createClass({displayName: "Event",
 });
 
 module.exports = Event;
-},{"react":207}],5:[function(require,module,exports){
+},{"./widgets/Button.react":8,"react":207}],5:[function(require,module,exports){
 var Content = require('./Content.react');
 var Header = require('./Header.react');
 var React = require('react');
@@ -320,14 +333,18 @@ var Button = React.createClass({displayName: "Button",
 
   render: function() {
     var className = 'fl-button';
+    var icon;
 
     if (this.props.className) {
       className = className + ' ' + this.props.className;
     }
+    if (this.props.iconClassName) {
+      icon = (React.createElement("i", {className: this.props.iconClassName}));
+    }
     return (
       /* jshint ignore:start */
       React.createElement("span", {className: className, onClick: this.props.onClick}, 
-        React.createElement("i", {className: this.props.iconClassName}), 
+        icon, 
         React.createElement("span", {className: "fl-button-label"}, this.props.label)
       )
       /* jshint ignore:end */

@@ -4,14 +4,18 @@ var Button = React.createClass({
 
   render: function() {
     var className = 'fl-button';
+    var icon;
 
     if (this.props.className) {
       className = className + ' ' + this.props.className;
     }
+    if (this.props.iconClassName) {
+      icon = (<i className={this.props.iconClassName}></i>);
+    }
     return (
       /* jshint ignore:start */
       <span className={className} onClick={this.props.onClick}>
-        <i className={this.props.iconClassName}></i>
+        {icon}
         <span className="fl-button-label">{this.props.label}</span>
       </span>
       /* jshint ignore:end */
