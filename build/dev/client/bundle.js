@@ -37,6 +37,15 @@ var FlockConstants = require('../constants/FlockConstants');
 
 var FlockActions = {
 
+  save: function(flock) {
+    AppDispatcher.dispatch({
+      actionType: FlockConstants.FLOCK_SAVE,
+      actionDetail: {
+        flock: flock
+      }
+    });
+  },
+
   create: function() {
     AppDispatcher.dispatch({
       actionType: FlockConstants.FLOCK_CREATE
@@ -90,6 +99,7 @@ var Content = React.createClass({displayName: "Content",
 module.exports = Content;
 },{"react":207,"react-router":48}],4:[function(require,module,exports){
 var React = require('react');
+var FlockActions = require('../actions/FlockActions');
 var Button = require('./widgets/Button.react');
 
 var Event = React.createClass({displayName: "Event",
@@ -136,11 +146,25 @@ var Event = React.createClass({displayName: "Event",
   },
 
   _save: function() {
-    console.log('Saving...');
+    FlockActions.save({
+      name: this.state.name,
+      organizer: this.state.organizer,
+      details: this.state.details,
+      where: this.state.where,
+      when: this.state.when
+    });
   },
 
   _cancel: function() {
-    console.log('Cancelling...');
+    var flock = this.props.flock;
+
+    this.setState({
+      name: flock.name,
+      organizer: flock.organizer,
+      details: flock.details,
+      where: flock.where,
+      when: flock.when
+    });
   },
 
   render: function() {
@@ -175,7 +199,7 @@ var Event = React.createClass({displayName: "Event",
 });
 
 module.exports = Event;
-},{"./widgets/Button.react":8,"react":207}],5:[function(require,module,exports){
+},{"../actions/FlockActions":2,"./widgets/Button.react":8,"react":207}],5:[function(require,module,exports){
 var Content = require('./Content.react');
 var Header = require('./Header.react');
 var React = require('react');
@@ -210,13 +234,11 @@ var FlockApp = React.createClass({displayName: "FlockApp",
     if (accessKey) {
       FlockActions.load(role, accessKey);
     }
-    FlockStore.on(FlockConstants.CREATE_EVENT, this._onFlockUpdate);
-    FlockStore.on(FlockConstants.LOAD_EVENT, this._onFlockUpdate);
+    FlockStore.on(FlockConstants.UPDATE_EVENT, this._onFlockUpdate);
   },
 
   componentWillUnmount: function() {
-    FlockStore.removeListener(FlockConstants.CREATE_EVENT, this._onFlockUpdate);
-    FlockStore.removeListener(FlockConstants.LOAD_EVENT, this._onFlockUpdate);
+    FlockStore.removeListener(FlockConstants.UPDATE_EVENT, this._onFlockUpdate);
   },
 
   render: function() {
@@ -355,10 +377,10 @@ var Button = React.createClass({displayName: "Button",
 module.exports = Button;
 },{"react":207}],9:[function(require,module,exports){
 module.exports = {
+  FLOCK_SAVE: 'FLOCK_SAVE',
   FLOCK_CREATE: 'FLOCK_CREATE',
   FLOCK_LOAD: 'FLOCK_LOAD',
-  CREATE_EVENT: 'CREATE_EVENT',
-  LOAD_EVENT: 'LOAD_EVENT',
+  UPDATE_EVENT: 'UPDATE_EVENT',
   OPEN_TAB: 'OPEN_TAB'
 };
 
@@ -405,6 +427,28 @@ var FlockStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function(action) {
   switch(action.actionType) {
+    case FlockConstants.FLOCK_SAVE:
+      var data = action.actionDetail.flock;
+
+      data.adminKey = _flock.adminKey
+      var request = $.ajax({
+        type: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        url: '/save',
+        data: JSON.stringify({
+          flock: data
+        })
+      });
+
+      Promise.resolve(request).then(function(flock) {
+        /*
+        _flock = flock;
+        FlockStore.emit(FlockConstants.UPDATE_EVENT);
+        */
+      });
+      break;
     case FlockConstants.FLOCK_CREATE:
       Promise.resolve($.post('/new')).then(function(flock) {
         _flock = flock;
@@ -413,7 +457,7 @@ AppDispatcher.register(function(action) {
           role: 'admin'
         });
         _role = 'admin';
-        FlockStore.emit(FlockConstants.CREATE_EVENT);
+        FlockStore.emit(FlockConstants.UPDATE_EVENT);
       });
       break;
     case FlockConstants.FLOCK_LOAD:
@@ -423,7 +467,7 @@ AppDispatcher.register(function(action) {
       _role = role;
       Promise.resolve($.get(url)).then(function(flock) {
         _flock = flock;
-        FlockStore.emit(FlockConstants.LOAD_EVENT);
+        FlockStore.emit(FlockConstants.UPDATE_EVENT);
       });
       break;
 

@@ -36,6 +36,28 @@ var FlockStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function(action) {
   switch(action.actionType) {
+    case FlockConstants.FLOCK_SAVE:
+      var data = action.actionDetail.flock;
+
+      data.adminKey = _flock.adminKey;
+      var request = $.ajax({
+        type: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        url: '/save',
+        data: JSON.stringify({
+          flock: data
+        })
+      });
+
+      Promise.resolve(request).then(function(flock) {
+        /*
+        _flock = flock;
+        FlockStore.emit(FlockConstants.UPDATE_EVENT);
+        */
+      });
+      break;
     case FlockConstants.FLOCK_CREATE:
       Promise.resolve($.post('/new')).then(function(flock) {
         _flock = flock;
@@ -44,7 +66,7 @@ AppDispatcher.register(function(action) {
           role: 'admin'
         });
         _role = 'admin';
-        FlockStore.emit(FlockConstants.CREATE_EVENT);
+        FlockStore.emit(FlockConstants.UPDATE_EVENT);
       });
       break;
     case FlockConstants.FLOCK_LOAD:
@@ -54,7 +76,7 @@ AppDispatcher.register(function(action) {
       _role = role;
       Promise.resolve($.get(url)).then(function(flock) {
         _flock = flock;
-        FlockStore.emit(FlockConstants.LOAD_EVENT);
+        FlockStore.emit(FlockConstants.UPDATE_EVENT);
       });
       break;
 

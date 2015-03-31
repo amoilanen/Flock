@@ -1,4 +1,5 @@
 var React = require('react');
+var FlockActions = require('../actions/FlockActions');
 var Button = require('./widgets/Button.react');
 
 var Event = React.createClass({
@@ -45,11 +46,25 @@ var Event = React.createClass({
   },
 
   _save: function() {
-    console.log('Saving...');
+    FlockActions.save({
+      name: this.state.name,
+      organizer: this.state.organizer,
+      details: this.state.details,
+      where: this.state.where,
+      when: this.state.when
+    });
   },
 
   _cancel: function() {
-    console.log('Cancelling...');
+    var flock = this.props.flock;
+
+    this.setState({
+      name: flock.name,
+      organizer: flock.organizer,
+      details: flock.details,
+      where: flock.where,
+      when: flock.when
+    });
   },
 
   render: function() {

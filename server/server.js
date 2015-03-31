@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var express = require('express');
+var bodyParser = require('body-parser');
 var Database = require('./db').Database;
 var uuid = require('./uuid').uuid;
 
@@ -34,6 +35,8 @@ app.get('/participants/admin/*', rewriteUrlToIndex);
 app.get('/event/guest/*', rewriteUrlToIndex);
 app.get('/participants/guest/*', rewriteUrlToIndex);
 
+app.use(bodyParser.json());
+
 app.post('/new', function(req, res) {
   var currentTime = new Date().getTime();
   var adminKey = currentTime + '.' + uuid();
@@ -57,6 +60,20 @@ app.post('/new', function(req, res) {
   }).then(function() {
     res.json(flock);
   }).catch(function(err) {
+    res.sendStatus(500);
+  });
+});
+
+app.post('/save', function(req, res) {
+  var flock = req.body.flock;
+  var query = {adminKey: flock.adminKey};
+
+  db.getConnection().then(function() {
+    return db.update(flockCollectionName, query, flock);
+  }).then(function() {
+    res.json(flock);
+  }).catch(function(err) {
+    console.log(err);
     res.sendStatus(500);
   });
 });

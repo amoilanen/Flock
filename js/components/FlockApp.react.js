@@ -32,13 +32,11 @@ var FlockApp = React.createClass({
     if (accessKey) {
       FlockActions.load(role, accessKey);
     }
-    FlockStore.on(FlockConstants.CREATE_EVENT, this._onFlockUpdate);
-    FlockStore.on(FlockConstants.LOAD_EVENT, this._onFlockUpdate);
+    FlockStore.on(FlockConstants.UPDATE_EVENT, this._onFlockUpdate);
   },
 
   componentWillUnmount: function() {
-    FlockStore.removeListener(FlockConstants.CREATE_EVENT, this._onFlockUpdate);
-    FlockStore.removeListener(FlockConstants.LOAD_EVENT, this._onFlockUpdate);
+    FlockStore.removeListener(FlockConstants.UPDATE_EVENT, this._onFlockUpdate);
   },
 
   render: function() {

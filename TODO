@@ -12,6 +12,7 @@
      --- Event details can only be viewed and not edited by a guest
      --- It is possible to switch between tabs - DONE
          ---- When switching between tabs the values on the Events tab disappear
+     --- Add form validation for the Event tab
 
      --- If non-existing eventId then empty Event tab with an error message is displayed
      --- If non-existing eventId then empty Participants tab with an error message is displayed
