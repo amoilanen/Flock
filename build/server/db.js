@@ -61,6 +61,22 @@ Database.prototype.insert = function(collectionName, docs) {
   });
 };
 
+Database.prototype.update = function(collectionName, query, doc) {
+  var self = this;
+
+  return new Promise(function(resolve, reject) {
+    var collection = self.db.collection(collectionName);
+
+    collection.update(query, doc, {}, function(err, result) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
 Database.prototype.disconnect = function() {
   this.db.close();
   this.db = null;

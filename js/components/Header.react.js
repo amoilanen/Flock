@@ -55,11 +55,12 @@ var Header = React.createClass({
         <span className="header-button-container">
           <Button label="New event"
             iconClassName="fa fa-2x fa-plus-square-o" 
-            onClick={this._onClick} />
+            onClick={this._onClick}
+            className="create-event" />
           <Button label="Invite others"
             iconClassName="fa fa-2x fa-share"
             onClick={isOnHomePage ? function() {}: this._onClick}
-            className={(isOnHomePage ? 'disabled' : '')} />
+            className={(isOnHomePage ? 'invite-others disabled' : 'invite-others')} />
         </span>
       </header>
       /* jshint ignore:end */

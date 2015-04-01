@@ -10,7 +10,9 @@ var Button = React.createClass({
       className = className + ' ' + this.props.className;
     }
     if (this.props.iconClassName) {
+      /* jshint ignore:start */
       icon = (<i className={this.props.iconClassName}></i>);
+      /* jshint ignore:end */
     }
     return (
       /* jshint ignore:start */

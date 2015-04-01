@@ -67,7 +67,7 @@ Database.prototype.update = function(collectionName, query, doc) {
   return new Promise(function(resolve, reject) {
     var collection = self.db.collection(collectionName);
 
-    collection.update(collection, query, doc, function(err, result) {
+    collection.update(query, doc, {}, function(err, result) {
       if (err) {
         reject(err);
       } else {

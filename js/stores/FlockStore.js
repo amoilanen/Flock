@@ -52,10 +52,8 @@ AppDispatcher.register(function(action) {
       });
 
       Promise.resolve(request).then(function(flock) {
-        /*
         _flock = flock;
         FlockStore.emit(FlockConstants.UPDATE_EVENT);
-        */
       });
       break;
     case FlockConstants.FLOCK_CREATE:

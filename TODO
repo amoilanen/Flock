@@ -26,6 +26,7 @@
 - Add unit testing infrastructure and add tests for the implemented scenarios, add tests for id generator
 - Participants tab contents is rendered, all the participants are shown
 
+- Push notifications from the server?
 - It is possible to delete an event for the admin
 - The id is not passed as part of the URL but as parameters in the body
 

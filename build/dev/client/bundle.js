@@ -313,11 +313,12 @@ var Header = React.createClass({displayName: "Header",
         React.createElement("span", {className: "header-button-container"}, 
           React.createElement(Button, {label: "New event", 
             iconClassName: "fa fa-2x fa-plus-square-o", 
-            onClick: this._onClick}), 
+            onClick: this._onClick, 
+            className: "create-event"}), 
           React.createElement(Button, {label: "Invite others", 
             iconClassName: "fa fa-2x fa-share", 
             onClick: isOnHomePage ? function() {}: this._onClick, 
-            className: (isOnHomePage ? 'disabled' : '')})
+            className: (isOnHomePage ? 'invite-others disabled' : 'invite-others')})
         )
       )
       /* jshint ignore:end */
@@ -361,7 +362,9 @@ var Button = React.createClass({displayName: "Button",
       className = className + ' ' + this.props.className;
     }
     if (this.props.iconClassName) {
+      /* jshint ignore:start */
       icon = (React.createElement("i", {className: this.props.iconClassName}));
+      /* jshint ignore:end */
     }
     return (
       /* jshint ignore:start */
@@ -430,7 +433,7 @@ AppDispatcher.register(function(action) {
     case FlockConstants.FLOCK_SAVE:
       var data = action.actionDetail.flock;
 
-      data.adminKey = _flock.adminKey
+      data.adminKey = _flock.adminKey;
       var request = $.ajax({
         type: 'POST',
         headers: {
@@ -443,10 +446,8 @@ AppDispatcher.register(function(action) {
       });
 
       Promise.resolve(request).then(function(flock) {
-        /*
         _flock = flock;
         FlockStore.emit(FlockConstants.UPDATE_EVENT);
-        */
       });
       break;
     case FlockConstants.FLOCK_CREATE:

@@ -66,10 +66,19 @@ app.post('/new', function(req, res) {
 
 app.post('/save', function(req, res) {
   var flock = req.body.flock;
+  var update = {
+    $set: {
+      name: flock.name,
+      organizer: flock.organizer,
+      details: flock.details,
+      where: flock.where,
+      when: flock.when
+    }
+  };
   var query = {adminKey: flock.adminKey};
 
   db.getConnection().then(function() {
-    return db.update(flockCollectionName, query, flock);
+    return db.update(flockCollectionName, query, update);
   }).then(function() {
     res.json(flock);
   }).catch(function(err) {
