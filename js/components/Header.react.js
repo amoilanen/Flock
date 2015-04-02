@@ -42,25 +42,26 @@ var Header = React.createClass({
       <header>
         <span className="header-tab-container">
           <span className={eventTabClass}
-                onClick={isOnHomePage ? function() {}: this._openEventTab}>
+              onClick={isOnHomePage ? function() {}: this._openEventTab}>
             <i className="fa fa-2x fa-cog"></i>
             <span className="event header-tab-label">Event</span>
           </span>
           <span className={participantsTabClass}
-                onClick={isOnHomePage ? function() {}: this._openParticipantsTab}>
+              onClick={isOnHomePage ? function() {}: this._openParticipantsTab}>
             <i className="fa fa-2x fa-users"></i>
             <span className="participants header-tab-label">Participants</span>
           </span>
         </span>
         <span className="header-button-container">
           <Button label="New event"
-            iconClassName="fa fa-2x fa-plus-square-o" 
-            onClick={this._onClick}
-            className="create-event" />
+              iconClassName="fa fa-2x fa-plus-square-o" 
+              onClick={this._onClick}
+              className="create-event" />
           <Button label="Invite others"
-            iconClassName="fa fa-2x fa-share"
-            onClick={isOnHomePage ? function() {}: this._onClick}
-            className={(isOnHomePage ? 'invite-others disabled' : 'invite-others')} />
+              iconClassName="fa fa-2x fa-share"
+              onClick={this._onClick}
+              disabled={isOnHomePage}
+              className='invite-others' />
         </span>
       </header>
       /* jshint ignore:end */

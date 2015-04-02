@@ -169,6 +169,7 @@ var Event = React.createClass({displayName: "Event",
 
   render: function() {
     var self = this;
+    var hasChanges = this._hasChanges();
 
     var fields = Event.FIELDS.map(function(field, idx) {
       return (
@@ -181,7 +182,7 @@ var Event = React.createClass({displayName: "Event",
         /* jshint ignore:end */
       );
     });
-    var unsavedChangesIndicatorClass = (self._hasChanges() ? 'unsaved-changes has-changes': 'unsaved-changes');
+    var unsavedChangesIndicatorClass = (hasChanges ? 'unsaved-changes has-changes': 'unsaved-changes');
 
     return (
       /* jshint ignore:start */
@@ -189,8 +190,14 @@ var Event = React.createClass({displayName: "Event",
         fields, 
         React.createElement("span", {className: unsavedChangesIndicatorClass}, "*"), 
         React.createElement("footer", null, 
-          React.createElement(Button, {label: "Save", onClick: this._save}), 
-          React.createElement(Button, {label: "Cancel", onClick: this._cancel})
+          React.createElement(Button, {
+              label: "Save", 
+              onClick: this._save, 
+              disabled: !hasChanges}), 
+          React.createElement(Button, {
+              label: "Cancel", 
+              onClick: this._cancel, 
+              disabled: !hasChanges})
         )
       )
       /* jshint ignore:end */
@@ -300,25 +307,26 @@ var Header = React.createClass({displayName: "Header",
       React.createElement("header", null, 
         React.createElement("span", {className: "header-tab-container"}, 
           React.createElement("span", {className: eventTabClass, 
-                onClick: isOnHomePage ? function() {}: this._openEventTab}, 
+              onClick: isOnHomePage ? function() {}: this._openEventTab}, 
             React.createElement("i", {className: "fa fa-2x fa-cog"}), 
             React.createElement("span", {className: "event header-tab-label"}, "Event")
           ), 
           React.createElement("span", {className: participantsTabClass, 
-                onClick: isOnHomePage ? function() {}: this._openParticipantsTab}, 
+              onClick: isOnHomePage ? function() {}: this._openParticipantsTab}, 
             React.createElement("i", {className: "fa fa-2x fa-users"}), 
             React.createElement("span", {className: "participants header-tab-label"}, "Participants")
           )
         ), 
         React.createElement("span", {className: "header-button-container"}, 
           React.createElement(Button, {label: "New event", 
-            iconClassName: "fa fa-2x fa-plus-square-o", 
-            onClick: this._onClick, 
-            className: "create-event"}), 
+              iconClassName: "fa fa-2x fa-plus-square-o", 
+              onClick: this._onClick, 
+              className: "create-event"}), 
           React.createElement(Button, {label: "Invite others", 
-            iconClassName: "fa fa-2x fa-share", 
-            onClick: isOnHomePage ? function() {}: this._onClick, 
-            className: (isOnHomePage ? 'invite-others disabled' : 'invite-others')})
+              iconClassName: "fa fa-2x fa-share", 
+              onClick: this._onClick, 
+              disabled: isOnHomePage, 
+              className: "invite-others"})
         )
       )
       /* jshint ignore:end */
@@ -355,11 +363,15 @@ var React = require('react');
 var Button = React.createClass({displayName: "Button",
 
   render: function() {
-    var className = 'fl-button';
     var icon;
+    var className = 'fl-button';
+    var onClick = this.props.disabled ? function() {}: this.props.onClick;
 
     if (this.props.className) {
       className = className + ' ' + this.props.className;
+    }
+    if (this.props.disabled) {
+      className = className + ' disabled';
     }
     if (this.props.iconClassName) {
       /* jshint ignore:start */
@@ -368,7 +380,7 @@ var Button = React.createClass({displayName: "Button",
     }
     return (
       /* jshint ignore:start */
-      React.createElement("span", {className: className, onClick: this.props.onClick}, 
+      React.createElement("span", {className: className, onClick: onClick}, 
         icon, 
         React.createElement("span", {className: "fl-button-label"}, this.props.label)
       )

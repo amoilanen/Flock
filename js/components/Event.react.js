@@ -69,6 +69,7 @@ var Event = React.createClass({
 
   render: function() {
     var self = this;
+    var hasChanges = this._hasChanges();
 
     var fields = Event.FIELDS.map(function(field, idx) {
       return (
@@ -81,7 +82,7 @@ var Event = React.createClass({
         /* jshint ignore:end */
       );
     });
-    var unsavedChangesIndicatorClass = (self._hasChanges() ? 'unsaved-changes has-changes': 'unsaved-changes');
+    var unsavedChangesIndicatorClass = (hasChanges ? 'unsaved-changes has-changes': 'unsaved-changes');
 
     return (
       /* jshint ignore:start */
@@ -89,8 +90,14 @@ var Event = React.createClass({
         {fields}
         <span className={unsavedChangesIndicatorClass}>*</span>
         <footer>
-          <Button label="Save" onClick={this._save} />
-          <Button label="Cancel" onClick={this._cancel} />
+          <Button
+              label="Save"
+              onClick={this._save}
+              disabled={!hasChanges} />
+          <Button
+              label="Cancel"
+              onClick={this._cancel}
+              disabled={!hasChanges} />
         </footer>
       </section>
       /* jshint ignore:end */
