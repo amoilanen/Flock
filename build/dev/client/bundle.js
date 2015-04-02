@@ -114,7 +114,8 @@ var Event = React.createClass({displayName: "Event",
       organizer: '',
       details: '',
       where: '',
-      when: ''
+      when: '',
+      receivedProperties: false
     };
   },
 
@@ -126,7 +127,8 @@ var Event = React.createClass({displayName: "Event",
       organizer: flock.organizer,
       details: flock.details,
       where: flock.where,
-      when: flock.when
+      when: flock.when,
+      receivedProperties: true
     });
   },
 
@@ -142,7 +144,7 @@ var Event = React.createClass({displayName: "Event",
 
     return Event.FIELDS.some(function(field) {
       return self.props.flock[field] !== self.state[field];
-    });
+    }) && this.state.receivedProperties;
   },
 
   _save: function() {

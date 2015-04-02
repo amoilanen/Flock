@@ -3,6 +3,7 @@
   position: relative;
   height: 42px;
   display: inline-block;
+  transition: all 0.5s ease;
 }
 .fl-button:hover {
   cursor: pointer;
@@ -150,13 +151,14 @@ header .fl-button {
 }
 .event-details .unsaved-changes {
   position: absolute;
-  display: none;
+  opacity: 0;
   top: 4px;
   right: 4px;
   font-size: 1.5em;
+  transition: all 0.5s ease;
 }
 .event-details .unsaved-changes.has-changes {
-  display: inline-block;
+  opacity: 1;
 }
 .event-details footer {
   margin-top: 16px;
