@@ -1,6 +1,7 @@
 var React = require('react');
 var FlockActions = require('../actions/FlockActions');
 var Button = require('./widgets/Button.react');
+var Util = require('../utils/Util');
 
 var Event = React.createClass({
 
@@ -77,7 +78,7 @@ var Event = React.createClass({
       return (
         /* jshint ignore:start */
         <div key={idx} className="field">
-          <label>{field}</label>
+          <label>{Util.capitalize(field)}</label>
           <input type="text" value={self.state[field]}
             onChange={self._onChange.bind(self, field)}></input>
         </div>
