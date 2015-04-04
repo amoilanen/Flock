@@ -14,13 +14,15 @@ var FlockApp = React.createClass({
 
   getInitialState: function() {
     return {
-      flock: {}
+      flock: {},
+      role: ''
     };
   },
 
   _onFlockUpdate: function() {
     this.setState({
-      flock: FlockStore.getFlock()
+      flock: FlockStore.getFlock(),
+      role: FlockStore.getRole()
     });
   },
 
@@ -32,11 +34,11 @@ var FlockApp = React.createClass({
     if (accessKey) {
       FlockActions.load(role, accessKey);
     }
-    FlockStore.on(FlockConstants.UPDATE_EVENT, this._onFlockUpdate);
+    FlockStore.on(FlockConstants.EVENTS.UPDATE_EVENT, this._onFlockUpdate);
   },
 
   componentWillUnmount: function() {
-    FlockStore.removeListener(FlockConstants.UPDATE_EVENT, this._onFlockUpdate);
+    FlockStore.removeListener(FlockConstants.EVENTS.UPDATE_EVENT, this._onFlockUpdate);
   },
 
   render: function() {
@@ -45,7 +47,7 @@ var FlockApp = React.createClass({
       /* jshint ignore:start */
       <div>
         <Header />
-        <Content flock={this.state.flock}/>
+        <Content flock={this.state.flock} role={this.state.role}/>
       </div>
       /* jshint ignore:end */
     );

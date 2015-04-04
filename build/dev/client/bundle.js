@@ -39,7 +39,7 @@ var FlockActions = {
 
   save: function(flock) {
     AppDispatcher.dispatch({
-      actionType: FlockConstants.FLOCK_SAVE,
+      actionType: FlockConstants.ACTIONS.FLOCK_SAVE,
       actionDetail: {
         flock: flock
       }
@@ -48,13 +48,13 @@ var FlockActions = {
 
   create: function() {
     AppDispatcher.dispatch({
-      actionType: FlockConstants.FLOCK_CREATE
+      actionType: FlockConstants.ACTIONS.FLOCK_CREATE
     });
   },
 
   load: function(role, accessKey) {
     AppDispatcher.dispatch({
-      actionType: FlockConstants.FLOCK_LOAD,
+      actionType: FlockConstants.ACTIONS.FLOCK_LOAD,
       actionDetail: {
         accessKey: accessKey,
         role: role
@@ -64,7 +64,7 @@ var FlockActions = {
 
   openTab: function(tab, role, accessKey) {
     AppDispatcher.dispatch({
-      actionType: FlockConstants.OPEN_TAB,
+      actionType: FlockConstants.ACTIONS.OPEN_TAB,
       actionDetail: {
         tab: tab,
         accessKey: accessKey,
@@ -85,7 +85,7 @@ var Content = React.createClass({displayName: "Content",
     return (
       /* jshint ignore:start */
       React.createElement("div", {className: "content"}, 
-        React.createElement(RouteHandler, {flock: this.props.flock}), 
+        React.createElement(RouteHandler, {flock: this.props.flock, role: this.props.role}), 
         React.createElement("div", {className: "logo"}, 
          React.createElement("span", null, "Flock"), 
          React.createElement("span", {className: "subtitle"}, "events")
@@ -99,6 +99,7 @@ var Content = React.createClass({displayName: "Content",
 module.exports = Content;
 },{"react":208,"react-router":49}],4:[function(require,module,exports){
 var React = require('react');
+var FlockConstants = require('../constants/FlockConstants');
 var FlockActions = require('../actions/FlockActions');
 var Button = require('./widgets/Button.react');
 var Util = require('../utils/Util');
@@ -173,35 +174,62 @@ var Event = React.createClass({displayName: "Event",
   render: function() {
     var self = this;
     var hasChanges = this._hasChanges();
+    var role = this.props.role;
+    var isAdmin = (role === FlockConstants.ROLES.ADMIN);
+    var unsavedChangesIndicator;
+    var footer;
 
     var fields = Event.FIELDS.map(function(field, idx) {
+      var fieldValue = isAdmin ? (
+        /* jshint ignore:start */
+        React.createElement("input", {type: "text", value: self.state[field], 
+          onChange: self._onChange.bind(self, field)})
+        /* jshint ignore:end */
+      ) : (
+        /* jshint ignore:start */
+        React.createElement("label", {className: "field-value"}, self.state[field])
+        /* jshint ignore:end */
+      );
+
       return (
         /* jshint ignore:start */
         React.createElement("div", {key: idx, className: "field"}, 
           React.createElement("label", null, Util.capitalize(field)), 
-          React.createElement("input", {type: "text", value: self.state[field], 
-            onChange: self._onChange.bind(self, field)})
+          fieldValue
         )
         /* jshint ignore:end */
       );
     });
-    var unsavedChangesIndicatorClass = (hasChanges ? 'unsaved-changes has-changes': 'unsaved-changes');
+
+    if (isAdmin) {
+      unsavedChangesIndicator = (
+        /* jshint ignore:start */
+        React.createElement("span", {
+          className: (hasChanges ? 'unsaved-changes has-changes': 'unsaved-changes')}, "*")
+        /* jshint ignore:end */
+      );
+      footer = (
+        /* jshint ignore:start */
+        React.createElement("footer", null, 
+          React.createElement(Button, {
+            label: "Save", 
+            onClick: this._save, 
+            disabled: !hasChanges}), 
+          React.createElement(Button, {
+            label: "Cancel", 
+            onClick: this._cancel, 
+            disabled: !hasChanges})
+        )
+        /* jshint ignore:end */
+      );
+    }
 
     return (
       /* jshint ignore:start */
       React.createElement("section", {className: "event-details"}, 
         fields, 
-        React.createElement("span", {className: unsavedChangesIndicatorClass}, "*"), 
-        React.createElement("footer", null, 
-          React.createElement(Button, {
-              label: "Save", 
-              onClick: this._save, 
-              disabled: !hasChanges}), 
-          React.createElement(Button, {
-              label: "Cancel", 
-              onClick: this._cancel, 
-              disabled: !hasChanges})
-        )
+        unsavedChangesIndicator, 
+        footer
       )
       /* jshint ignore:end */
     );
@@ -209,7 +237,7 @@ var Event = React.createClass({displayName: "Event",
 });
 
 module.exports = Event;
-},{"../actions/FlockActions":2,"../utils/Util":13,"./widgets/Button.react":8,"react":208}],5:[function(require,module,exports){
+},{"../actions/FlockActions":2,"../constants/FlockConstants":9,"../utils/Util":13,"./widgets/Button.react":8,"react":208}],5:[function(require,module,exports){
 var Content = require('./Content.react');
 var Header = require('./Header.react');
 var React = require('react');
@@ -226,13 +254,15 @@ var FlockApp = React.createClass({displayName: "FlockApp",
 
   getInitialState: function() {
     return {
-      flock: {}
+      flock: {},
+      role: ''
     };
   },
 
   _onFlockUpdate: function() {
     this.setState({
-      flock: FlockStore.getFlock()
+      flock: FlockStore.getFlock(),
+      role: FlockStore.getRole()
     });
   },
 
@@ -244,11 +274,11 @@ var FlockApp = React.createClass({displayName: "FlockApp",
     if (accessKey) {
       FlockActions.load(role, accessKey);
     }
-    FlockStore.on(FlockConstants.UPDATE_EVENT, this._onFlockUpdate);
+    FlockStore.on(FlockConstants.EVENTS.UPDATE_EVENT, this._onFlockUpdate);
   },
 
   componentWillUnmount: function() {
-    FlockStore.removeListener(FlockConstants.UPDATE_EVENT, this._onFlockUpdate);
+    FlockStore.removeListener(FlockConstants.EVENTS.UPDATE_EVENT, this._onFlockUpdate);
   },
 
   render: function() {
@@ -257,7 +287,7 @@ var FlockApp = React.createClass({displayName: "FlockApp",
       /* jshint ignore:start */
       React.createElement("div", null, 
         React.createElement(Header, null), 
-        React.createElement(Content, {flock: this.state.flock})
+        React.createElement(Content, {flock: this.state.flock, role: this.state.role})
       )
       /* jshint ignore:end */
     );
@@ -395,11 +425,19 @@ var Button = React.createClass({displayName: "Button",
 module.exports = Button;
 },{"react":208}],9:[function(require,module,exports){
 module.exports = {
-  FLOCK_SAVE: 'FLOCK_SAVE',
-  FLOCK_CREATE: 'FLOCK_CREATE',
-  FLOCK_LOAD: 'FLOCK_LOAD',
-  UPDATE_EVENT: 'UPDATE_EVENT',
-  OPEN_TAB: 'OPEN_TAB'
+  ACTIONS: {
+    FLOCK_SAVE: 'FLOCK_SAVE',
+    FLOCK_CREATE: 'FLOCK_CREATE',
+    FLOCK_LOAD: 'FLOCK_LOAD',
+    OPEN_TAB: 'OPEN_TAB'
+  },
+  EVENTS: {
+    UPDATE_EVENT: 'UPDATE_EVENT'
+  },
+  ROLES: {
+    ADMIN: 'admin',
+    GUEST: 'guest'
+  }
 };
 
 },{}],10:[function(require,module,exports){
@@ -439,13 +477,13 @@ var FlockStore = assign({}, EventEmitter.prototype, {
     return _role;
   },
   getAccessKey: function() {
-    return _role === 'admin' ? _flock.adminKey : _flock.guestKey;
+    return _role === FlockConstants.ROLES.ADMIN ? _flock.adminKey : _flock.guestKey;
   }
 });
 
 AppDispatcher.register(function(action) {
   switch(action.actionType) {
-    case FlockConstants.FLOCK_SAVE:
+    case FlockConstants.ACTIONS.FLOCK_SAVE:
       var data = action.actionDetail.flock;
 
       data.adminKey = _flock.adminKey;
@@ -462,28 +500,28 @@ AppDispatcher.register(function(action) {
 
       Promise.resolve(request).then(function(flock) {
         _flock = flock;
-        FlockStore.emit(FlockConstants.UPDATE_EVENT);
+        FlockStore.emit(FlockConstants.EVENTS.UPDATE_EVENT);
       });
       break;
-    case FlockConstants.FLOCK_CREATE:
+    case FlockConstants.ACTIONS.FLOCK_CREATE:
       Promise.resolve($.post('/new')).then(function(flock) {
         _flock = flock;
         RouterStore.get().transitionTo('event', {
           accessKey: flock.adminKey,
-          role: 'admin'
+          role: FlockConstants.ROLES.ADMIN
         });
-        _role = 'admin';
-        FlockStore.emit(FlockConstants.UPDATE_EVENT);
+        _role = FlockConstants.ROLES.ADMIN;
+        FlockStore.emit(FlockConstants.EVENTS.UPDATE_EVENT);
       });
       break;
-    case FlockConstants.FLOCK_LOAD:
+    case FlockConstants.ACTIONS.FLOCK_LOAD:
       var $__0=   action.actionDetail,role=$__0.role,accessKey=$__0.accessKey;
       var url = ['', 'flock', role, accessKey].join('/');
 
       _role = role;
       Promise.resolve($.get(url)).then(function(flock) {
         _flock = flock;
-        FlockStore.emit(FlockConstants.UPDATE_EVENT);
+        FlockStore.emit(FlockConstants.EVENTS.UPDATE_EVENT);
       });
       break;
 
@@ -508,7 +546,7 @@ function get() {
 
 AppDispatcher.register(function(action) {
   switch(action.actionType) {
-    case FlockConstants.OPEN_TAB:
+    case FlockConstants.ACTIONS.OPEN_TAB:
       _router.transitionTo(action.actionDetail.tab, {
         accessKey: action.actionDetail.accessKey,
         role: action.actionDetail.role

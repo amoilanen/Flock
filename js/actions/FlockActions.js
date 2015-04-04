@@ -5,7 +5,7 @@ var FlockActions = {
 
   save: function(flock) {
     AppDispatcher.dispatch({
-      actionType: FlockConstants.FLOCK_SAVE,
+      actionType: FlockConstants.ACTIONS.FLOCK_SAVE,
       actionDetail: {
         flock: flock
       }
@@ -14,13 +14,13 @@ var FlockActions = {
 
   create: function() {
     AppDispatcher.dispatch({
-      actionType: FlockConstants.FLOCK_CREATE
+      actionType: FlockConstants.ACTIONS.FLOCK_CREATE
     });
   },
 
   load: function(role, accessKey) {
     AppDispatcher.dispatch({
-      actionType: FlockConstants.FLOCK_LOAD,
+      actionType: FlockConstants.ACTIONS.FLOCK_LOAD,
       actionDetail: {
         accessKey: accessKey,
         role: role
@@ -30,7 +30,7 @@ var FlockActions = {
 
   openTab: function(tab, role, accessKey) {
     AppDispatcher.dispatch({
-      actionType: FlockConstants.OPEN_TAB,
+      actionType: FlockConstants.ACTIONS.OPEN_TAB,
       actionDetail: {
         tab: tab,
         accessKey: accessKey,

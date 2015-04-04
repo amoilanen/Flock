@@ -13,7 +13,7 @@ function get() {
 
 AppDispatcher.register(function(action) {
   switch(action.actionType) {
-    case FlockConstants.OPEN_TAB:
+    case FlockConstants.ACTIONS.OPEN_TAB:
       _router.transitionTo(action.actionDetail.tab, {
         accessKey: action.actionDetail.accessKey,
         role: action.actionDetail.role

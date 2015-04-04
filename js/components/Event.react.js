@@ -1,4 +1,5 @@
 var React = require('react');
+var FlockConstants = require('../constants/FlockConstants');
 var FlockActions = require('../actions/FlockActions');
 var Button = require('./widgets/Button.react');
 var Util = require('../utils/Util');
@@ -73,35 +74,62 @@ var Event = React.createClass({
   render: function() {
     var self = this;
     var hasChanges = this._hasChanges();
+    var role = this.props.role;
+    var isAdmin = (role === FlockConstants.ROLES.ADMIN);
+    var unsavedChangesIndicator;
+    var footer;
 
     var fields = Event.FIELDS.map(function(field, idx) {
+      var fieldValue = isAdmin ? (
+        /* jshint ignore:start */
+        <input type="text" value={self.state[field]}
+          onChange={self._onChange.bind(self, field)}></input>
+        /* jshint ignore:end */
+      ) : (
+        /* jshint ignore:start */
+        <label className="field-value">{self.state[field]}</label>
+        /* jshint ignore:end */
+      );
+
       return (
         /* jshint ignore:start */
         <div key={idx} className="field">
           <label>{Util.capitalize(field)}</label>
-          <input type="text" value={self.state[field]}
-            onChange={self._onChange.bind(self, field)}></input>
+          {fieldValue}
         </div>
         /* jshint ignore:end */
       );
     });
-    var unsavedChangesIndicatorClass = (hasChanges ? 'unsaved-changes has-changes': 'unsaved-changes');
+
+    if (isAdmin) {
+      unsavedChangesIndicator = (
+        /* jshint ignore:start */
+        <span
+          className={(hasChanges ? 'unsaved-changes has-changes': 'unsaved-changes')}>*</span>
+        /* jshint ignore:end */
+      );
+      footer = (
+        /* jshint ignore:start */
+        <footer>
+          <Button
+            label="Save"
+            onClick={this._save}
+            disabled={!hasChanges} />
+          <Button
+            label="Cancel"
+            onClick={this._cancel}
+            disabled={!hasChanges} />
+        </footer>
+        /* jshint ignore:end */
+      );
+    }
 
     return (
       /* jshint ignore:start */
       <section className="event-details">
         {fields}
-        <span className={unsavedChangesIndicatorClass}>*</span>
-        <footer>
-          <Button
-              label="Save"
-              onClick={this._save}
-              disabled={!hasChanges} />
-          <Button
-              label="Cancel"
-              onClick={this._cancel}
-              disabled={!hasChanges} />
-        </footer>
+        {unsavedChangesIndicator}
+        {footer}
       </section>
       /* jshint ignore:end */
     );

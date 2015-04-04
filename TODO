@@ -10,8 +10,9 @@
      --- The created event can be accessed via this URL /guest/event/{attend_id} - DONE
      --- Event details can be edited and saved by an admin
      --- Event details can only be viewed and not edited by a guest
+     --- Event name is shown in the browser title as well, together with 'invite' for a guest
      --- It is possible to switch between tabs - DONE
-         ---- When switching between tabs the values on the Events tab disappear
+         ---- When switching between tabs the values on the Events tab should not disappear
      --- Add form validation for the Event tab
 
      --- If non-existing eventId then empty Event tab with an error message is displayed
@@ -22,6 +23,7 @@
      --- Accessing /guest/* with an admin id is not possible
      --- Accessing /guest/* with unknown id is not possible
      --- Guest does not receive adminKey
+     --- What if the values of the fields are too long?
 
 - Add unit testing infrastructure and add tests for the implemented scenarios, add tests for id generator
 - Participants tab contents is rendered, all the participants are shown
@@ -37,15 +39,15 @@
 - It is possible to add a new participant
 - It is possible to remove a participant
 - Participants can be sorted
-- Participant list can be exported as text
-- Participant list can be exported as pdf
+- Organizer can join their own flock
 - Flock can be shared with prospective participants, 'non-admin' url is generated and copied to the clipboard
 - Participant who received a 'non-admin' url can join an event and will be shown in the list of participants
-- Organizer can join their own flock
 - Participant can leave an event they joined
 - Participant can join only once using the same browser
 - Organizer can 'lock' a flock so that nobody can leave or join the event after that
 - Organizer can always unlock an event, even the past one
+- Participant list can be exported as text
+- Participant list can be exported as pdf
 
 - Minification and creating a production build
 - Deploy the first version to Heroku

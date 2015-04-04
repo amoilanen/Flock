@@ -30,13 +30,13 @@ var FlockStore = assign({}, EventEmitter.prototype, {
     return _role;
   },
   getAccessKey: function() {
-    return _role === 'admin' ? _flock.adminKey : _flock.guestKey;
+    return _role === FlockConstants.ROLES.ADMIN ? _flock.adminKey : _flock.guestKey;
   }
 });
 
 AppDispatcher.register(function(action) {
   switch(action.actionType) {
-    case FlockConstants.FLOCK_SAVE:
+    case FlockConstants.ACTIONS.FLOCK_SAVE:
       var data = action.actionDetail.flock;
 
       data.adminKey = _flock.adminKey;
@@ -53,28 +53,28 @@ AppDispatcher.register(function(action) {
 
       Promise.resolve(request).then(function(flock) {
         _flock = flock;
-        FlockStore.emit(FlockConstants.UPDATE_EVENT);
+        FlockStore.emit(FlockConstants.EVENTS.UPDATE_EVENT);
       });
       break;
-    case FlockConstants.FLOCK_CREATE:
+    case FlockConstants.ACTIONS.FLOCK_CREATE:
       Promise.resolve($.post('/new')).then(function(flock) {
         _flock = flock;
         RouterStore.get().transitionTo('event', {
           accessKey: flock.adminKey,
-          role: 'admin'
+          role: FlockConstants.ROLES.ADMIN
         });
-        _role = 'admin';
-        FlockStore.emit(FlockConstants.UPDATE_EVENT);
+        _role = FlockConstants.ROLES.ADMIN;
+        FlockStore.emit(FlockConstants.EVENTS.UPDATE_EVENT);
       });
       break;
-    case FlockConstants.FLOCK_LOAD:
+    case FlockConstants.ACTIONS.FLOCK_LOAD:
       var {role, accessKey} = action.actionDetail;
       var url = ['', 'flock', role, accessKey].join('/');
 
       _role = role;
       Promise.resolve($.get(url)).then(function(flock) {
         _flock = flock;
-        FlockStore.emit(FlockConstants.UPDATE_EVENT);
+        FlockStore.emit(FlockConstants.EVENTS.UPDATE_EVENT);
       });
       break;
 

@@ -144,7 +144,12 @@ header .fl-button {
   display: inline-block;
   margin-right: 16px;
   min-width: 80px;
+  height: 28px;
+  vertical-align: top;
   width: 20%;
+}
+.event-details label.field-value {
+  width: auto;
 }
 .event-details .field {
   margin-top: 16px;
