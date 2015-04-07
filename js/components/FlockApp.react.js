@@ -41,8 +41,18 @@ var FlockApp = React.createClass({
     FlockStore.removeListener(FlockConstants.EVENTS.UPDATE_EVENT, this._onFlockUpdate);
   },
 
-  render: function() {
+  _renderTitle: function() {
+    var titlePrefix = (this.state.role === FlockConstants.ROLES.ADMIN) ? 'Manage' : 'Join';
 
+    if (typeof this.state.flock.name !== 'undefined') {
+      document.title = ['Flock. ', titlePrefix, '"' + this.state.flock.name + '".'].join(' ');
+    } else {
+      document.title = ['Flock.']
+    }
+  },
+
+  render: function() {
+    this._renderTitle();
     return (
       /* jshint ignore:start */
       <div>

@@ -8,8 +8,8 @@
      --- The event details are displayed on the Event tab - DONE
      --- The created event can be accessed via this URL /admin/event/{admin_id} - DONE
      --- The created event can be accessed via this URL /guest/event/{attend_id} - DONE
-     --- Event details can be edited and saved by an admin
-     --- Event details can only be viewed and not edited by a guest
+     --- Event details can be edited and saved by an admin - DONE
+     --- Event details can only be viewed and not edited by a guest - DONE
      --- Event name is shown in the browser title as well, together with 'invite' for a guest
      --- It is possible to switch between tabs - DONE
          ---- When switching between tabs the values on the Events tab should not disappear
