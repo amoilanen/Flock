@@ -4,6 +4,8 @@ var FlockActions = require('../actions/FlockActions');
 var Button = require('./widgets/Button.react');
 var Util = require('../utils/Util');
 
+var _savedState;
+
 var Event = React.createClass({
 
   statics: {
@@ -17,11 +19,25 @@ var Event = React.createClass({
       details: '',
       where: '',
       when: '',
-      receivedProperties: false
+      initialized: false
     };
   },
 
+  componentDidMount: function() {
+    if (_savedState) {
+      this.setState(_savedState);
+    }
+  },
+
+  componentWillUnmount: function() {
+    _savedState = this.state;
+  },
+
   componentWillReceiveProps: function(properties) {
+    this._initializeState(properties);
+  },
+
+  _initializeState: function(properties) {
     var flock = properties.flock;
 
     this.setState({
@@ -30,7 +46,7 @@ var Event = React.createClass({
       details: flock.details,
       where: flock.where,
       when: flock.when,
-      receivedProperties: true
+      initialized: true
     });
   },
 
@@ -46,7 +62,7 @@ var Event = React.createClass({
 
     return Event.FIELDS.some(function(field) {
       return self.props.flock[field] !== self.state[field];
-    }) && this.state.receivedProperties;
+    }) && this.state.initialized;
   },
 
   _save: function() {
