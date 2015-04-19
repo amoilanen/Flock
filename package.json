@@ -45,8 +45,8 @@
     ]
   },
   "jest": {
-    "rootDir": "./js",
-    "scriptPreprocessor": "../test.preprocessor.js",
+    "rootDir": ".",
+    "scriptPreprocessor": "test.preprocessor.js",
     "unmockedModulePathPatterns": [
       "react",
       "react-router"
