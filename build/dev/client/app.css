@@ -136,9 +136,20 @@ header .fl-button {
   margin-left: 150px;
   margin-top: 50px;
   padding: 16px;
+  padding-left: 32px;
   width: 600px;
   position: relative;
   color: #66757f;
+}
+.event-details header {
+  margin-bottom: 48px;
+  padding-left: 32px;
+  border-bottom: none;
+}
+.event-details header .event-details-description {
+  font-size: 15px;
+  font-style: italic;
+  margin-left: 40px;
 }
 .event-details label {
   display: inline-block;

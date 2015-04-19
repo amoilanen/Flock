@@ -243,6 +243,10 @@ var Event = React.createClass({displayName: "Event",
     return (
       /* jshint ignore:start */
       React.createElement("section", {className: "event-details"}, 
+        React.createElement("header", null, 
+          React.createElement("i", {className: "fa fa-4x fa-calendar"}), 
+          React.createElement("span", {className: "event-details-description"}, "What, when, where and any additional details.")
+        ), 
         fields, 
         unsavedChangesIndicator, 
         footer
