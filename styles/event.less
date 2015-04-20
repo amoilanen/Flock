@@ -33,13 +33,22 @@
     width: 20%;
 
     &.field-value {
+      max-width: 70%;
       width: auto;
     }
   }
 
   .field {
     margin-top: 16px;
-    input {
+    input,
+    textarea {
+      font-family: "Trebuchet MS", Helvetica, sans-serif;
+      font-size: 14px;
+      width: 60%;
+      max-width: 60%;
+      min-width: 60%;
+      max-height: 120px;
+      overflow-y: auto;
     }
   }
 

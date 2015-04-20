@@ -13,17 +13,17 @@
      --- Event name is shown in the browser title as well, together with 'invite' for a guest - DONE
      --- It is possible to switch between tabs - DONE
          ---- When switching between tabs the values on the Events tab should not disappear - DONE
+     --- Guest does not receive adminKey - OK
      --- Add form validation for the Event tab
+     --- What if the values of the fields are too long? - DONE
+     --- Organizer can switch to the Participants tab which is empty - DONE
+
      --- Accessing /admin/* with a guest id is not possible
      --- Accessing /admin/* with unknown id is not possible
      --- Accessing /guest/* with an admin id is not possible
      --- Accessing /guest/* with unknown id is not possible
-     --- Guest does not receive adminKey
-     --- What if the values of the fields are too long?
-
      --- If non-existing eventId then empty Event tab with an error message is displayed
      --- If non-existing eventId then empty Participants tab with an error message is displayed
-     --- Organizer can switch to the Participants tab which is empty
 
 - Add unit testing infrastructure and add tests for the implemented scenarios, add tests for id generator
 - Participants tab contents is rendered, all the participants are shown

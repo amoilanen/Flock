@@ -196,16 +196,23 @@ var Event = React.createClass({displayName: "Event",
     var footer;
 
     var fields = Event.FIELDS.map(function(field, idx) {
-      var fieldValue = isAdmin ? (
-        /* jshint ignore:start */
-        React.createElement("input", {type: "text", value: self.state[field], 
-          onChange: self._onChange.bind(self, field)})
-        /* jshint ignore:end */
-      ) : (
-        /* jshint ignore:start */
-        React.createElement("label", {className: "field-value"}, self.state[field])
-        /* jshint ignore:end */
-      );
+      /* jshint ignore:start */
+      var fieldValue = isAdmin ?
+        (field === 'details' ?
+          (
+            React.createElement("textarea", {
+              onChange: self._onChange.bind(self, field)}, 
+              self.state[field]
+            )
+          ) : (
+            React.createElement("input", {type: "text", value: self.state[field], 
+              onChange: self._onChange.bind(self, field)}
+            )
+          )
+        ) : (
+          React.createElement("label", {className: "field-value"}, self.state[field])
+        );
+      /* jshint ignore:end */
 
       return (
         /* jshint ignore:start */

@@ -96,16 +96,23 @@ var Event = React.createClass({
     var footer;
 
     var fields = Event.FIELDS.map(function(field, idx) {
-      var fieldValue = isAdmin ? (
-        /* jshint ignore:start */
-        <input type="text" value={self.state[field]}
-          onChange={self._onChange.bind(self, field)}></input>
-        /* jshint ignore:end */
-      ) : (
-        /* jshint ignore:start */
-        <label className="field-value">{self.state[field]}</label>
-        /* jshint ignore:end */
-      );
+      /* jshint ignore:start */
+      var fieldValue = isAdmin ?
+        (field === 'details' ?
+          (
+            <textarea
+              onChange={self._onChange.bind(self, field)}>
+              {self.state[field]}
+            </textarea>
+          ) : (
+            <input type="text" value={self.state[field]}
+              onChange={self._onChange.bind(self, field)}>
+            </input>
+          )
+        ) : (
+          <label className="field-value">{self.state[field]}</label>
+        );
+      /* jshint ignore:end */
 
       return (
         /* jshint ignore:start */
