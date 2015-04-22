@@ -109,7 +109,25 @@ var _savedState;
 var Event = React.createClass({displayName: "Event",
 
   statics: {
-    FIELDS: ['name', 'organizer', 'details', 'where', 'when']
+    FIELDS: [
+      {
+        name: 'name',
+        validation: 'nonEmpty'
+      },
+      {
+        name: 'organizer',
+        validation: 'nonEmpty'
+      },
+      {
+        name: 'details'
+      },
+      {
+        name: 'where'
+      },
+      {
+        name: 'when'
+      }
+    ]
   },
 
   getInitialState: function() {
@@ -119,6 +137,7 @@ var Event = React.createClass({displayName: "Event",
       details: '',
       where: '',
       when: '',
+      error: {},
       initialized: false
     };
   },
@@ -161,18 +180,36 @@ var Event = React.createClass({displayName: "Event",
     var self = this;
 
     return Event.FIELDS.some(function(field) {
-      return self.props.flock[field] !== self.state[field];
+      return self.props.flock[field.name] !== self.state[field.name];
     }) && this.state.initialized;
   },
 
-  _save: function() {
-    FlockActions.save({
-      name: this.state.name,
-      organizer: this.state.organizer,
-      details: this.state.details,
-      where: this.state.where,
-      when: this.state.when
+  _validate: function() {
+    var error = {};
+
+    if (this.state.name.length === 0) {
+      error.name = 'Should be non-empty';
+    }
+    if (this.state.organizer.length === 0) {
+      error.organizer = 'Should be non-empty';
+    }
+    this.setState({
+      error: error
     });
+    return error;
+  },
+
+  _save: function() {
+    var validationResult = this._validate();
+    if (Object.keys(validationResult).length === 0) {
+      FlockActions.save({
+        name: this.state.name,
+        organizer: this.state.organizer,
+        details: this.state.details,
+        where: this.state.where,
+        when: this.state.when
+      });
+    }
   },
 
   _cancel: function() {
@@ -196,29 +233,46 @@ var Event = React.createClass({displayName: "Event",
     var footer;
 
     var fields = Event.FIELDS.map(function(field, idx) {
+      var hasErrorValue = (typeof self.state.error[field.name] !== 'undefined');
+      var errorMessage;
+      var className = hasErrorValue ? 'error' : '';
+
       /* jshint ignore:start */
       var fieldValue = isAdmin ?
-        (field === 'details' ?
+        (field.name === 'details' ?
           (
             React.createElement("textarea", {
-              onChange: self._onChange.bind(self, field)}, 
-              self.state[field]
+              className: className, 
+              onChange: self._onChange.bind(self, field.name)}, 
+              self.state[field.name]
             )
           ) : (
-            React.createElement("input", {type: "text", value: self.state[field], 
-              onChange: self._onChange.bind(self, field)}
+            React.createElement("input", {
+              className: className, 
+              type: "text", 
+              value: self.state[field.name], 
+              onChange: self._onChange.bind(self, field.name)}
             )
           )
         ) : (
-          React.createElement("label", {className: "field-value"}, self.state[field])
+          React.createElement("label", {className: "field-value"}, self.state[field.name])
         );
       /* jshint ignore:end */
+
+      if (hasErrorValue) {
+        /* jshint ignore:start */
+        errorMessage = (
+          React.createElement("label", {className: "field-error-message"}, self.state.error[field.name])
+        );
+        /* jshint ignore:end */
+      }
 
       return (
         /* jshint ignore:start */
         React.createElement("div", {key: idx, className: "field"}, 
-          React.createElement("label", null, Util.capitalize(field)), 
-          fieldValue
+          React.createElement("label", null, Util.capitalize(field.name)), 
+          fieldValue, 
+          errorMessage
         )
         /* jshint ignore:end */
       );
@@ -314,7 +368,7 @@ var FlockApp = React.createClass({displayName: "FlockApp",
     if (typeof this.state.flock.name !== 'undefined') {
       document.title = ['Flock. ', titlePrefix, '"' + this.state.flock.name + '".'].join(' ');
     } else {
-      document.title = ['Flock.']
+      document.title = ['Flock.'];
     }
   },
 

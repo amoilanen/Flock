@@ -47,7 +47,7 @@ var FlockApp = React.createClass({
     if (typeof this.state.flock.name !== 'undefined') {
       document.title = ['Flock. ', titlePrefix, '"' + this.state.flock.name + '".'].join(' ');
     } else {
-      document.title = ['Flock.']
+      document.title = ['Flock.'];
     }
   },
 
