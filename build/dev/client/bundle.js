@@ -156,6 +156,36 @@ var Event = React.createClass({displayName: "Event",
     this._initializeState(properties);
   },
 
+  componentWillUpdate: function(nextProps, nextState) {
+    this._validate(nextState);
+  },
+
+  _hasNewFields: function(next, previous) {
+    return Object.keys(previous).join(',') != Object.keys(next).join(',');
+  },
+
+  _hasErrors: function() {
+    return Object.keys(this.state.error).length > 0;
+  },
+
+  _validate: function(state) {
+    var error = {};
+
+    if (state.name.length === 0) {
+      error.name = 'Should be non-empty';
+    }
+    if (state.organizer.length === 0) {
+      error.organizer = 'Should be non-empty';
+    }
+    var newState = Object.assign({}, state, {
+      error: error
+    });
+
+    if (this._hasNewFields(error, this.state.error)) {
+      this.setState(newState);
+    }
+  },
+
   _initializeState: function(properties) {
     var flock = properties.flock;
 
@@ -184,24 +214,8 @@ var Event = React.createClass({displayName: "Event",
     }) && this.state.initialized;
   },
 
-  _validate: function() {
-    var error = {};
-
-    if (this.state.name.length === 0) {
-      error.name = 'Should be non-empty';
-    }
-    if (this.state.organizer.length === 0) {
-      error.organizer = 'Should be non-empty';
-    }
-    this.setState({
-      error: error
-    });
-    return error;
-  },
-
   _save: function() {
-    var validationResult = this._validate();
-    if (Object.keys(validationResult).length === 0) {
+    if (!this._hasErrors()) {
       FlockActions.save({
         name: this.state.name,
         organizer: this.state.organizer,
@@ -243,8 +257,8 @@ var Event = React.createClass({displayName: "Event",
           (
             React.createElement("textarea", {
               className: className, 
-              onChange: self._onChange.bind(self, field.name)}, 
-              self.state[field.name]
+              onChange: self._onChange.bind(self, field.name), 
+              value: self.state[field.name]}
             )
           ) : (
             React.createElement("input", {
