@@ -2,31 +2,23 @@ var React = require('react');
 var FlockConstants = require('../constants/FlockConstants');
 var FlockActions = require('../actions/FlockActions');
 var Button = require('./widgets/Button.react');
+var Validations = require('./mixins/validations/Validations');
+var ValidatorMixin = require('./mixins/Validator.react');
 var Util = require('../utils/Util');
 
 var _savedState;
 
 var Event = React.createClass({
 
+  mixins: [ValidatorMixin],
+
   statics: {
     FIELDS: [
-      {
-        name: 'name',
-        validation: 'nonEmpty'
-      },
-      {
-        name: 'organizer',
-        validation: 'nonEmpty'
-      },
-      {
-        name: 'details'
-      },
-      {
-        name: 'where'
-      },
-      {
-        name: 'when'
-      }
+      'name',
+      'organizer',
+      'details',
+      'where',
+      'when'
     ]
   },
 
@@ -37,7 +29,6 @@ var Event = React.createClass({
       details: '',
       where: '',
       when: '',
-      error: {},
       initialized: false
     };
   },
@@ -46,6 +37,10 @@ var Event = React.createClass({
     if (_savedState) {
       this.setState(_savedState);
     }
+    this.setFieldValidations([
+      new Validations.NonEmptyValidation('name'),
+      new Validations.NonEmptyValidation('organizer')
+    ]);
   },
 
   componentWillUnmount: function() {
@@ -54,36 +49,6 @@ var Event = React.createClass({
 
   componentWillReceiveProps: function(properties) {
     this._initializeState(properties);
-  },
-
-  componentWillUpdate: function(nextProps, nextState) {
-    this._validate(nextState);
-  },
-
-  _hasNewFields: function(next, previous) {
-    return Object.keys(previous).join(',') != Object.keys(next).join(',');
-  },
-
-  _hasErrors: function() {
-    return Object.keys(this.state.error).length > 0;
-  },
-
-  _validate: function(state) {
-    var error = {};
-
-    if (state.name.length === 0) {
-      error.name = 'Should be non-empty';
-    }
-    if (state.organizer.length === 0) {
-      error.organizer = 'Should be non-empty';
-    }
-    var newState = Object.assign({}, state, {
-      error: error
-    });
-
-    if (this._hasNewFields(error, this.state.error)) {
-      this.setState(newState);
-    }
   },
 
   _initializeState: function(properties) {
@@ -110,12 +75,12 @@ var Event = React.createClass({
     var self = this;
 
     return Event.FIELDS.some(function(field) {
-      return self.props.flock[field.name] !== self.state[field.name];
+      return self.props.flock[field] !== self.state[field];
     }) && this.state.initialized;
   },
 
   _save: function() {
-    if (!this._hasErrors()) {
+    if (!this.hasErrors()) {
       FlockActions.save({
         name: this.state.name,
         organizer: this.state.organizer,
@@ -147,36 +112,36 @@ var Event = React.createClass({
     var footer;
 
     var fields = Event.FIELDS.map(function(field, idx) {
-      var hasErrorValue = (typeof self.state.error[field.name] !== 'undefined');
-      var errorMessage;
+      var errorMessage = self.getErrorMessage(field);
+      var hasErrorValue = (typeof errorMessage !== 'undefined');
       var className = hasErrorValue ? 'error' : '';
 
       /* jshint ignore:start */
       var fieldValue = isAdmin ?
-        (field.name === 'details' ?
+        (field === 'details' ?
           (
             <textarea
               className={className}
-              onChange={self._onChange.bind(self, field.name)}
-              value={self.state[field.name]}>
+              onChange={self._onChange.bind(self, field)}
+              value={self.state[field]}>
             </textarea>
           ) : (
             <input
               className={className}
               type="text"
-              value={self.state[field.name]}
-              onChange={self._onChange.bind(self, field.name)}>
+              value={self.state[field]}
+              onChange={self._onChange.bind(self, field)}>
             </input>
           )
         ) : (
-          <label className="field-value">{self.state[field.name]}</label>
+          <label className="field-value">{self.state[field]}</label>
         );
       /* jshint ignore:end */
 
       if (hasErrorValue) {
         /* jshint ignore:start */
         errorMessage = (
-          <label className="field-error-message">{self.state.error[field.name]}</label>
+          <label className="field-error-message">{errorMessage}</label>
         );
         /* jshint ignore:end */
       }
@@ -184,7 +149,7 @@ var Event = React.createClass({
       return (
         /* jshint ignore:start */
         <div key={idx} className="field">
-          <label>{Util.capitalize(field.name)}</label>
+          <label>{Util.capitalize(field)}</label>
           {fieldValue}
           {errorMessage}
         </div>
